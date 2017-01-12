@@ -1,5 +1,7 @@
 package application;
 
+import javafx.scene.layout.Pane;
+
 class Coordinates
 {
 	int x;
@@ -45,8 +47,9 @@ public class logicStrips
 	 public final int maxRow=12;
 
 
-	public void rightrotateFurniture(Furniture furniture)
+	public void rightrotateFurniture(Pane[][] logicBoard, Furniture furniture)
 	{
+		handleFurniture(logicBoard,furniture,null);
 		int centerX = (furniture.upperLeft.x + furniture.bottomRight.x) / 2;
 		int centerY = (furniture.upperLeft.y + furniture.bottomRight.y) / 2;
 		Coordinates newUpLeft=new Coordinates(centerX + 1 + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
@@ -56,10 +59,14 @@ public class logicStrips
 			furniture.bottomRight = newBotRight;
 			System.out.println(furniture.upperLeft.x + " " + furniture.upperLeft.y);
 		}
+		handleFurniture(logicBoard,furniture,"-fx-background-color:#dae753;");
 	}
 
-	public void leftrotateFurniture(Furniture furniture)
+	public void leftrotateFurniture(Pane[][] logicBoard, Furniture furniture)
 	{
+
+    	handleFurniture(logicBoard,furniture,null);
+
 		int centerX = ((furniture.upperLeft.x + furniture.bottomRight.x)) / 2;
 		int centerY = ((furniture.upperLeft.y + furniture.bottomRight.y)) / 2;
 		Coordinates newUpLeft=new Coordinates(centerX -1+ (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
@@ -69,15 +76,18 @@ public class logicStrips
 			furniture.bottomRight = newBotRight;
 			System.out.println(centerX + " " + centerY);
 		}
+		handleFurniture(logicBoard,furniture,"-fx-background-color:#dae753;");
 	}
-	public void moveUpandDown(Furniture furniture,int x)
+	public void move(Pane[][] logicBoard, Furniture furniture,int upAndDown,int leftAndRight)
 	{
-		Coordinates newUpLeft=new Coordinates(furniture.upperLeft.x,furniture.upperLeft.y+x);
-		Coordinates newBotRight=new Coordinates(furniture.bottomRight.x,furniture.bottomRight.y+x);
+		handleFurniture(logicBoard,furniture,null);
+		Coordinates newUpLeft=new Coordinates(furniture.upperLeft.x+leftAndRight,furniture.upperLeft.y+upAndDown);
+		Coordinates newBotRight=new Coordinates(furniture.bottomRight.x+leftAndRight,furniture.bottomRight.y+upAndDown);
 		if (checkValidity(newUpLeft,newBotRight)){
 			furniture.upperLeft = newUpLeft;
 			furniture.bottomRight = newBotRight;
 		}
+		handleFurniture(logicBoard,furniture,"-fx-background-color:#dae753;");
 
 	}
 	public boolean checkValidity(Coordinates upleft,Coordinates downright){
@@ -86,5 +96,15 @@ public class logicStrips
 				(upleft.y<=this.maxRow && upleft.y>=0) &&(downright.y<=this.maxRow && downright.y>=0);
 
 	}
+
+	public void handleFurniture(Pane[][] logicBoard, Furniture furniture, String color)
+	{
+		for(int i = furniture.upperLeft.x; i < furniture.bottomRight.x ;i++){
+    		for(int j = furniture.upperLeft.y; j < furniture.bottomRight.y; j++){
+    			logicBoard[i][j].setStyle(color);
+    		}
+    	}
+	}
+
 
 }

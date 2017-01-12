@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane blendMode="SRC_ATOP" prefHeight="587.0" prefWidth="892.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.stripsController">
+<AnchorPane blendMode="SRC_ATOP" prefHeight="587.0" prefWidth="1139.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.stripsController">
    <children>
       <GridPane fx:id="board" alignment="CENTER" gridLinesVisible="true" layoutX="14.0" layoutY="58.0" prefHeight="473.0" prefWidth="796.0" snapToPixel="false" style="-fx-background-color: white;">
         <columnConstraints>
@@ -90,9 +90,11 @@
             <Glow level="0.49" />
          </effect>
       </GridPane>
-      <Button fx:id="right" layoutX="266.0" layoutY="542.0" mnemonicParsing="false" onAction="#right" text="right" />
-      <Button fx:id="left" layoutX="149.0" layoutY="542.0" mnemonicParsing="false" onAction="#left" text="left" />
-      <Button fx:id="up" layoutX="347.0" layoutY="542.0" mnemonicParsing="false" onAction="#up" text="Up" />
-      <Button fx:id="down" layoutX="412.0" layoutY="542.0" mnemonicParsing="false" onAction="#down" text="Down" />
+      <Button fx:id="rotateright" layoutX="982.0" layoutY="130.0" mnemonicParsing="false" onAction="#rotateright" text="rotateright" />
+      <Button fx:id="rotateleft" layoutX="863.0" layoutY="130.0" mnemonicParsing="false" onAction="#rotateleft" text="rotateleft" />
+       <Button fx:id="moveleft" layoutX="895.0" layoutY="209.0" mnemonicParsing="false" onAction="#left" text="left" />
+        <Button fx:id="moveright" layoutX="976.0" layoutY="209.0" mnemonicParsing="false" onAction="#right" text="right" />
+      <Button fx:id="up" layoutX="936.0" layoutY="184.0" mnemonicParsing="false" onAction="#up" text="Up" />
+      <Button fx:id="down" layoutX="929.0" layoutY="209.0" mnemonicParsing="false" onAction="#down" styleClass="glyphicon glyphicon-arrow-up" text="Down" />
    </children>
 </AnchorPane>
