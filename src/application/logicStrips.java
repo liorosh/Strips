@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+
 import javafx.scene.layout.Pane;
 
 class Coordinates
@@ -42,6 +44,8 @@ class Wall
 }
 public class logicStrips
 {
+	ArrayList <Wall> walls= new ArrayList<Wall>();
+	ArrayList <Furniture> furnitures= new ArrayList<Furniture>();
 	 public final int maxCol = 20;
 	 public final int maxRow = 12;
 
@@ -50,8 +54,12 @@ public class logicStrips
 		handleFurniture(logicBoard,furniture,null);
 		int centerX = (furniture.upperLeft.x + furniture.bottomRight.x) / 2;
 		int centerY = (furniture.upperLeft.y + furniture.bottomRight.y) / 2;
-		Coordinates newUpLeft=new Coordinates(centerX + 1 + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
-		Coordinates newBotRight=new Coordinates(centerX + 1 + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
+		Coordinates newUpLeft=new Coordinates(centerX  + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
+		Coordinates newBotRight=new Coordinates(centerX  + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
+		if ((furniture.bottomRight.x - furniture.upperLeft.x) > (furniture.bottomRight.y - furniture.upperLeft.y)){
+			newUpLeft.x++;
+			newBotRight.x++;
+		}
 		if (checkValidity(newUpLeft,newBotRight))
 		{
 			furniture.upperLeft = newUpLeft;
@@ -66,8 +74,12 @@ public class logicStrips
     	handleFurniture(logicBoard,furniture,null);
 		int centerX = ((furniture.upperLeft.x + furniture.bottomRight.x)) / 2;
 		int centerY = ((furniture.upperLeft.y + furniture.bottomRight.y)) / 2;
-		Coordinates newUpLeft=new Coordinates(centerX -1+ (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
-		Coordinates newBotRight=new Coordinates(centerX -1 + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
+		Coordinates newUpLeft=new Coordinates(centerX + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
+		Coordinates newBotRight=new Coordinates(centerX  + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
+		if ((furniture.bottomRight.x - furniture.upperLeft.x) < (furniture.bottomRight.y - furniture.upperLeft.y)){
+			newUpLeft.x--;
+			newBotRight.x--;
+		}
 		if (checkValidity(newUpLeft,newBotRight))
 		{
 			furniture.upperLeft = newUpLeft;
@@ -91,16 +103,45 @@ public class logicStrips
 	public boolean checkValidity(Coordinates upleft,Coordinates downright)
 	{
 
-		return (upleft.x<=this.maxCol && upleft.x>=0 ) && (downright.x<=this.maxCol && downright.x>=0) &&
-				(upleft.y<=this.maxRow && upleft.y>=0) &&(downright.y<=this.maxRow && downright.y>=0);
+		return (upleft.x<this.maxCol && upleft.x>=0 ) && (downright.x<this.maxCol && downright.x>=0) &&
+				(upleft.y<this.maxRow && upleft.y>=0) &&(downright.y<this.maxRow && downright.y>=0) &&
+				checkForWalls(upleft,downright,walls) /*&&checkForFurniture(upleft,downright,obstacles*/;
 	}
 
 	public void handleFurniture(Pane[][] logicBoard, Furniture furniture, String color)
 	{
-		for(int i = furniture.upperLeft.x; i < furniture.bottomRight.x ;i++){
-    		for(int j = furniture.upperLeft.y; j < furniture.bottomRight.y; j++){
+		for(int i = furniture.upperLeft.x; i <= furniture.bottomRight.x ;i++)
+		{
+    		for(int j = furniture.upperLeft.y; j <= furniture.bottomRight.y; j++)
+    		{
     			logicBoard[i][j].setStyle(color);
     		}
     	}
 	}
+
+	public void setWalls()
+	{
+		walls.add(new Wall(new Coordinates(7,0), new Coordinates(8,0)));
+    	walls.add(new Wall(new Coordinates(7,4), new Coordinates(8,4)));
+    	walls.add(new Wall(new Coordinates(7,5), new Coordinates(8,5)));
+    	walls.add(new Wall(new Coordinates(7,11), new Coordinates(8,11)));
+    	walls.add(new Wall(new Coordinates(0,4), new Coordinates(0,5)));
+    	walls.add(new Wall(new Coordinates(1,4), new Coordinates(1,5)));
+    	walls.add(new Wall(new Coordinates(6,4), new Coordinates(6,5)));
+    	walls.add(new Wall(new Coordinates(7,4), new Coordinates(7,5)));
+	}
+	public boolean checkForWalls(Coordinates upleft,Coordinates downright,ArrayList<Wall> walls)
+	{
+		for(Wall wall: walls){
+			if((wall.firstPos.x >= upleft.x && wall.firstPos.y >= upleft.y ) && (wall.secondPos.x <= downright.x && wall.secondPos.y <= downright.y) &&
+				(wall.firstPos.x <= downright.x && wall.firstPos.y <= downright.y ) && (wall.secondPos.x >= upleft.x && wall.secondPos.y >= upleft.y))
+				return false ;
+		}
+		return true;
+	}
+	public boolean checkForFurniture(Coordinates upleft,Coordinates downright, ArrayList<Furniture> obstacles){
+
+		return true;
+	}
+
 }

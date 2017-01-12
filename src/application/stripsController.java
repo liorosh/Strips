@@ -1,9 +1,12 @@
 package application;
 
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Popup;
 
 import java.util.ArrayList;
 
@@ -12,11 +15,11 @@ import javafx.fxml.FXML;
 
 public class stripsController {
 	Pane[][] logicBoard=new Pane[20][12];
-	Furniture furniture= new Furniture(new Coordinates(3,3),new Coordinates(6,7));
+	Furniture furniture= new Furniture(new Coordinates(3,3),new Coordinates(5,6));
 	logicStrips logic = new logicStrips();
-	ArrayList <Wall> walls= new ArrayList<Wall>();
+
 	@FXML
-    private Button up,down,rotateleft,rotateright,moveright,moveleft;
+    private Button up,down,rotateleft,rotateright,moveright,moveleft,addFurniture;
 
     @FXML
     private GridPane board;
@@ -57,6 +60,18 @@ public class stripsController {
 		logic.rightrotateFurniture(logicBoard,furniture);
     }
 
+    @FXML
+    void addFurniture(ActionEvent event) {
+    	Popup pop=new Popup();
+    	//pop.is
+    	/*Alert alert = new Alert(AlertType.INFORMATION);
+    	alert.setTitle("Information Dialog");
+    	alert.setHeaderText("Look, an Information Dialog");
+    	alert.setContentText("I have a great meage for you!");
+
+    	alert.showAndWait();*/
+    }
+
 
     @FXML
     void initialize()
@@ -70,10 +85,10 @@ public class stripsController {
     			board.add(guiItem, i, j);
     		}
     	}
-
-    	for(int i = furniture.upperLeft.x; i < furniture.bottomRight.x ;i++)
+    	logic.setWalls();
+    	for(int i = furniture.upperLeft.x; i <= furniture.bottomRight.x ;i++)
     	{
-    		for(int j = furniture.upperLeft.y; j < furniture.bottomRight.y; j++)
+    		for(int j = furniture.upperLeft.y; j <= furniture.bottomRight.y; j++)
     		{
     			logicBoard[i][j].setStyle("-fx-background-color:#dae753;");
     		}

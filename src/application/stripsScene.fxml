@@ -49,42 +49,19 @@
             <RowConstraints maxHeight="377.0" minHeight="10.0" prefHeight="288.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="5" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5" />
-            <Pane prefHeight="188.0" prefWidth="224.0" GridPane.columnIndex="13" GridPane.rowIndex="5" />
-            <Separator blendMode="HARD_LIGHT" prefHeight="6.0" prefWidth="39.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="BOTTOM" />
+            <Separator blendMode="HARD_LIGHT" pickOnBounds="false" prefHeight="8.0" prefWidth="78.0" rotate="180.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER" />
             <Separator blendMode="HARD_LIGHT" halignment="LEFT" prefHeight="6.0" prefWidth="39.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="BOTTOM" />
             <Separator blendMode="HARD_LIGHT" disable="true" orientation="VERTICAL" prefHeight="200.0" rotate="180.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="8" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER" />
             <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="8" GridPane.rowIndex="5" />
             <Separator blendMode="HARD_LIGHT" orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="8" GridPane.rowIndex="11" />
             <Separator blendMode="HARD_LIGHT" orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="8" GridPane.rowIndex="5" />
             <Separator blendMode="HARD_LIGHT" orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="8" GridPane.rowIndex="4" />
-            <Pane prefHeight="200.0" prefWidth="200.0" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="16" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="17" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="19" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="18" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Separator blendMode="HARD_LIGHT" prefHeight="6.0" prefWidth="39.0" rotate="180.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5" GridPane.valignment="BASELINE" GridPane.vgrow="NEVER" />
+            <Separator blendMode="HARD_LIGHT" prefHeight="6.0" prefWidth="39.0" rotate="180.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="5" GridPane.valignment="TOP" />
+            <Separator blendMode="HARD_LIGHT" halignment="LEFT" orientation="VERTICAL" prefHeight="200.0" rotate="180.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="7" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.vgrow="SOMETIMES" />
+            <Separator blendMode="HARD_LIGHT" disable="true" halignment="RIGHT" orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="7" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="BASELINE" />
+            <Separator blendMode="HARD_LIGHT" disable="true" halignment="RIGHT" orientation="VERTICAL" prefHeight="200.0" rotate="180.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="7" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE" />
+            <Separator blendMode="HARD_LIGHT" orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: black;" valignment="BASELINE" GridPane.columnIndex="7" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
          </children>
          <effect>
             <Glow level="0.49" />
@@ -96,5 +73,6 @@
         <Button fx:id="moveright" layoutX="976.0" layoutY="209.0" mnemonicParsing="false" onAction="#right" text="right" />
       <Button fx:id="up" layoutX="936.0" layoutY="184.0" mnemonicParsing="false" onAction="#up" text="Up" />
       <Button fx:id="down" layoutX="929.0" layoutY="209.0" mnemonicParsing="false" onAction="#down" styleClass="glyphicon glyphicon-arrow-up" text="Down" />
+      <Button fx:id="addFurniture" layoutX="924.0" layoutY="506.0" mnemonicParsing="false" onAction="#addFurniture" text="add Furniture" />
    </children>
 </AnchorPane>
