@@ -4,6 +4,7 @@ package application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
@@ -15,8 +16,34 @@ import javafx.fxml.FXML;
 
 public class stripsController {
 	Pane[][] logicBoard=new Pane[20][12];
-	Furniture furniture= new Furniture(new Coordinates(3,3),new Coordinates(5,6));
+	Furniture furniture= new Furniture(new Coordinates(3,3),new Coordinates(5,6),new Coordinates(3,3),new Coordinates(5,6));
 	logicStrips logic = new logicStrips();
+	
+	
+	
+    @FXML
+    private TextField x1;
+    
+    @FXML
+    private TextField y4;
+
+    @FXML
+    private TextField x3;
+
+    @FXML
+    private TextField x4;
+    
+    @FXML
+    private TextField y3;
+
+    @FXML
+    private TextField y2;
+    
+    @FXML
+    private TextField y1;
+
+    @FXML
+    private TextField x2;
 
 	@FXML
     private Button up,down,rotateleft,rotateright,moveright,moveleft,addFurniture;
@@ -53,6 +80,11 @@ public class stripsController {
     {
 		logic.leftrotateFurniture(logicBoard,furniture);
     }
+    
+    @FXML
+    void startFunction(ActionEvent event) {
+
+    }
 
     @FXML
     void rotateright(ActionEvent event)
@@ -62,7 +94,28 @@ public class stripsController {
 
     @FXML
     void addFurniture(ActionEvent event) {
-    	Popup pop=new Popup();
+    	
+    	int ix1 = Integer.valueOf(x1.getText());
+    	int ix2 = Integer.valueOf(x2.getText());
+    	int iy1 = Integer.valueOf(y1.getText());
+    	int iy2 = Integer.valueOf(y2.getText());
+    	int ix3 = Integer.valueOf(x3.getText());
+    	int ix4 = Integer.valueOf(x4.getText());
+    	int iy3 = Integer.valueOf(y3.getText());
+    	int iy4 = Integer.valueOf(y4.getText());
+    	Furniture fur = new Furniture(new Coordinates(ix1,iy1),new Coordinates(ix2,iy2),new Coordinates(ix3,iy3),new Coordinates(ix4,iy4));
+    	logic.furnitures.add(fur);
+    	x1.setText("");
+    	x2.setText("");
+    	x3.setText("");
+    	y4.setText("");
+    	x4.setText("");
+    	y1.setText("");
+    	y2.setText("");
+    	y3.setText("");
+    	logic.handleFurniture(logicBoard,fur, "-fx-background-color:#2E64FE;");
+    	//System.out.println(String.valueOf(logic.findDistance(new Coordinates(4,8), new Coordinates(7,10))));
+    	//Popup pop=new Popup();
     	//pop.is
     	/*Alert alert = new Alert(AlertType.INFORMATION);
     	alert.setTitle("Information Dialog");

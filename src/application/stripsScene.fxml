@@ -67,12 +67,34 @@
             <Glow level="0.49" />
          </effect>
       </GridPane>
-      <Button fx:id="rotateright" layoutX="982.0" layoutY="130.0" mnemonicParsing="false" onAction="#rotateright" text="rotateright" />
-      <Button fx:id="rotateleft" layoutX="863.0" layoutY="130.0" mnemonicParsing="false" onAction="#rotateleft" text="rotateleft" />
-       <Button fx:id="moveleft" layoutX="895.0" layoutY="209.0" mnemonicParsing="false" onAction="#left" text="left" />
-        <Button fx:id="moveright" layoutX="976.0" layoutY="209.0" mnemonicParsing="false" onAction="#right" text="right" />
-      <Button fx:id="up" layoutX="936.0" layoutY="184.0" mnemonicParsing="false" onAction="#up" text="Up" />
-      <Button fx:id="down" layoutX="929.0" layoutY="209.0" mnemonicParsing="false" onAction="#down" styleClass="glyphicon glyphicon-arrow-up" text="Down" />
+      <Button fx:id="rotateright" layoutX="991.0" layoutY="58.0" mnemonicParsing="false" onAction="#rotateright" text="rotateright" />
+      <Button fx:id="rotateleft" layoutX="855.0" layoutY="58.0" mnemonicParsing="false" onAction="#rotateleft" text="rotateleft" />
+       <Button fx:id="moveleft" layoutX="897.0" layoutY="120.0" mnemonicParsing="false" onAction="#left" text="left" />
+        <Button fx:id="moveright" layoutX="977.0" layoutY="120.0" mnemonicParsing="false" onAction="#right" text="right" />
+      <Button fx:id="up" layoutX="937.0" layoutY="95.0" mnemonicParsing="false" onAction="#up" text="Up" />
+      <Button fx:id="down" layoutX="930.0" layoutY="120.0" mnemonicParsing="false" onAction="#down" styleClass="glyphicon glyphicon-arrow-up" text="Down" />
       <Button fx:id="addFurniture" layoutX="924.0" layoutY="506.0" mnemonicParsing="false" onAction="#addFurniture" text="add Furniture" />
+      <TextField layoutX="971.0" layoutY="222.0" prefHeight="25.0" prefWidth="34.0" fx:id="x1" />
+      <TextField fx:id="y1" layoutX="1011.0" layoutY="222.0" prefHeight="25.0" prefWidth="34.0" />
+      <TextField layoutX="971.0" layoutY="263.0" prefHeight="25.0" prefWidth="34.0" fx:id="x2" />
+      <TextField fx:id="y2" layoutX="1011.0" layoutY="263.0" prefHeight="25.0" prefWidth="34.0" />
+      <Label layoutX="915.0" layoutY="178.0" text="Source Coordinates:" />
+      <Label layoutX="886.0" layoutY="226.0" text="Upper left:" />
+      <Label layoutX="885.0" layoutY="267.0" text="Buttom right:" />
+      <Label layoutX="974.0" layoutY="205.0" text="x" />
+      <Label layoutX="1012.0" layoutY="205.0" text="y" />
+      <Label layoutX="1012.0" layoutY="247.0" text="y" />
+      <Label layoutX="971.0" layoutY="247.0" text="x" />
+      <Label layoutX="915.0" layoutY="306.0" text="Destination Coordinates:" />
+      <Label layoutX="973.0" layoutY="367.0" text="x" />
+      <Label layoutX="1014.0" layoutY="325.0" text="y" />
+      <Label layoutX="976.0" layoutY="325.0" text="x" />
+      <Label layoutX="887.0" layoutY="387.0" text="Buttom right:" />
+      <Label layoutX="888.0" layoutY="346.0" text="Upper left:" />
+      <TextField fx:id="y4" layoutX="1013.0" layoutY="383.0" prefHeight="25.0" prefWidth="34.0" />
+      <TextField layoutX="973.0" layoutY="383.0" prefHeight="25.0" prefWidth="34.0" fx:id="x4" />
+      <TextField fx:id="y3" layoutX="1013.0" layoutY="342.0" prefHeight="25.0" prefWidth="34.0" />
+      <TextField layoutX="973.0" layoutY="342.0" prefHeight="25.0" prefWidth="34.0" fx:id="x3" />
+      <Label layoutX="1014.0" layoutY="366.0" text="y" />
    </children>
 </AnchorPane>

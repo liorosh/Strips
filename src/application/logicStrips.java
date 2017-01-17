@@ -14,21 +14,36 @@ class Coordinates
 		this.y = y;
 	}
 }
+class Room
+{
+	Coordinates upLeftCoord;
+	Coordinates downRightCoord;
+	Door door1;
+	Door door2;
+	Room (Coordinates upLeft, Coordinates downRight, Door door1, Door door2){
+		this.upLeftCoord = upLeft;
+		this.downRightCoord = downRight;
+		this.door1 = door1;
+		this.door2 = door2;
+	}
+	
+}
 class Furniture
 {
+	double disFromEdge;
 	Coordinates upperLeft;
 	Coordinates bottomRight;
 	Coordinates finalUpperLeft;
 	Coordinates finalBottomRight;
 	Coordinates diff;
 	boolean needRotate;
-	Furniture (Coordinates upleft, Coordinates botright/*,Coordinates fupleft, Coordinates fbotright*/)
+	Furniture (Coordinates upleft, Coordinates botright ,Coordinates fupleft, Coordinates fbotright)
 	{
 		this.upperLeft = upleft;
 		this.bottomRight = botright;
-		/*this.finalUpperLeft = fupleft;
+		this.finalUpperLeft = fupleft;
 		this.finalBottomRight = fbotright;
-		this.diff.x = fupleft.x - upleft.x;
+		/*this.diff.x = fupleft.x - upleft.x;
 		this.diff.y = fbotright.y - botright.y;*/
 	}
 }
@@ -42,13 +57,25 @@ class Wall
 		this.secondPos = second;
 	}
 }
+class Door
+{
+	Coordinates upperLeftPos;
+	Coordinates downRightPos;
+	Door(Coordinates upperLeft, Coordinates downRight)
+	{
+		this.upperLeftPos = upperLeft;
+		this.downRightPos = downRight;
+	}
+}
 public class logicStrips
 {
 	ArrayList <Wall> walls= new ArrayList<Wall>();
 	ArrayList <Furniture> furnitures= new ArrayList<Furniture>();
 	 public final int maxCol = 20;
 	 public final int maxRow = 12;
-
+	 public Room room1 = new Room (new Coordinates(0,0), new Coordinates(7,4), new Door (new Coordinates(7,1), new Coordinates(8,3)),  new Door (new Coordinates(2,4), new Coordinates(5,5)));
+	 public Room room2 = new Room (new Coordinates(0,5), new Coordinates(7,11), new Door (new Coordinates(2,4), new Coordinates(5,5)),  new Door (new Coordinates(7,5), new Coordinates(8,10)));
+	 public Room room3 = new Room (new Coordinates(8,0), new Coordinates(19,11), new Door (new Coordinates(7,1), new Coordinates(8,3)),  new Door (new Coordinates(7,5), new Coordinates(8,10)));
 	public void rightrotateFurniture(Pane[][] logicBoard, Furniture furniture)
 	{
 		handleFurniture(logicBoard,furniture,null);
@@ -143,5 +170,26 @@ public class logicStrips
 
 		return true;
 	}
-
+	
+	public boolean at(Furniture fur ,Coordinates upperL, Coordinates bottomR ){
+		return ((fur.upperLeft==upperL) && fur.bottomRight==bottomR);
+	}
+	
+	public Room whichRoom(Coordinates upperL, Coordinates bottomR){
+		if(upperL.x <= room1.downRightCoord.x && upperL.x >=room1.upLeftCoord.x && bottomR.x <= room1.downRightCoord.x && bottomR.x >=room1.upLeftCoord.x && upperL.y <= room1.downRightCoord.y && upperL.y >=room1.upLeftCoord.y && bottomR.y <= room1.downRightCoord.y && bottomR.y >=room1.upLeftCoord.y ){
+			return room1;
+		}
+		else if (upperL.x <= room2.downRightCoord.x && upperL.x >=room2.upLeftCoord.x && bottomR.x <= room2.downRightCoord.x && bottomR.x >=room2.upLeftCoord.x && upperL.y <= room2.downRightCoord.y && upperL.y >=room2.upLeftCoord.y && bottomR.y <= room2.downRightCoord.y && bottomR.y >=room2.upLeftCoord.y ){
+			return room2;
+		}
+		else if (upperL.x <= room3.downRightCoord.x && upperL.x >=room3.upLeftCoord.x && bottomR.x <= room3.downRightCoord.x && bottomR.x >=room3.upLeftCoord.x && upperL.y <= room3.downRightCoord.y && upperL.y >=room3.upLeftCoord.y && bottomR.y <= room3.downRightCoord.y && bottomR.y >=room3.upLeftCoord.y ){
+			return room3;
+		}
+		else 
+			return null;
+	}
+    public double findDistance (Coordinates coord1, Coordinates coord2){
+    	double dis = Math.sqrt((Math.pow((double)(coord2.y - coord1.y),2)) + ( Math.pow((double)(coord2.x - coord1.x),2)));
+    	return dis;
+    }
 }
