@@ -2,6 +2,10 @@ package application;
 
 import java.util.ArrayList;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 class Coordinates
@@ -14,6 +18,69 @@ class Coordinates
 		this.y = y;
 	}
 }
+
+class StackItem{
+	Furniture fur;
+	
+}
+
+class Action extends StackItem{
+	public enum direction{
+		LEFT, RIGHT, UP, DOWN, ROTATELEFT, ROTATERIGHT 
+	}
+	direction moveDirection;
+	logicStrips logic;
+	public void move( Furniture furniture,int upAndDown,int leftAndRight)
+	{
+		logic.handleFurniture(logic.logicBoard,furniture,null);
+		Coordinates newUpLeft=new Coordinates(furniture.upperLeft.x+leftAndRight,furniture.upperLeft.y+upAndDown);
+		Coordinates newBotRight=new Coordinates(furniture.bottomRight.x+leftAndRight,furniture.bottomRight.y+upAndDown);
+		furniture.upperLeft = newUpLeft;
+		furniture.bottomRight = newBotRight;
+		logic.handleFurniture(logic.logicBoard,furniture,"-fx-background-color:#dae753;");
+	}
+	public void rightrotateFurniture( Furniture furniture)
+	{
+		logic.handleFurniture(logic.logicBoard,furniture,null);
+		int centerX = (furniture.upperLeft.x + furniture.bottomRight.x) / 2;
+		int centerY = (furniture.upperLeft.y + furniture.bottomRight.y) / 2;
+		Coordinates newUpLeft=new Coordinates(centerX  + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
+		Coordinates newBotRight=new Coordinates(centerX  + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
+		if ((furniture.bottomRight.x - furniture.upperLeft.x) > (furniture.bottomRight.y - furniture.upperLeft.y)){
+			newUpLeft.x++;
+			newBotRight.x++;
+		}
+		furniture.upperLeft = newUpLeft;
+		furniture.bottomRight = newBotRight;
+		System.out.println(furniture.upperLeft.x + " " + furniture.upperLeft.y);
+		
+		logic.handleFurniture(logic.logicBoard,furniture,"-fx-background-color:#dae753;");
+	}
+
+	public void leftrotateFurniture( Furniture furniture)
+	{
+		logic.handleFurniture(logic.logicBoard,furniture,null);
+		int centerX = ((furniture.upperLeft.x + furniture.bottomRight.x)) / 2;
+		int centerY = ((furniture.upperLeft.y + furniture.bottomRight.y)) / 2;
+		Coordinates newUpLeft=new Coordinates(centerX + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
+		Coordinates newBotRight=new Coordinates(centerX  + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
+		if ((furniture.bottomRight.x - furniture.upperLeft.x) < (furniture.bottomRight.y - furniture.upperLeft.y)){
+			newUpLeft.x--;
+			newBotRight.x--;
+		}
+	
+		furniture.upperLeft = newUpLeft;
+		furniture.bottomRight = newBotRight;
+		System.out.println(centerX + " " + centerY);
+		
+		logic.handleFurniture(logic.logicBoard,furniture,"-fx-background-color:#dae753;");
+	}
+}
+
+class Precond extends StackItem{
+	
+}
+
 class Room
 {
 	Coordinates upLeftCoord;
@@ -30,6 +97,7 @@ class Room
 }
 class Furniture
 {
+	int ID;
 	double disFromEdge;
 	Coordinates upperLeft;
 	Coordinates bottomRight;
@@ -37,8 +105,9 @@ class Furniture
 	Coordinates finalBottomRight;
 	Coordinates diff;
 	boolean needRotate;
-	Furniture (Coordinates upleft, Coordinates botright ,Coordinates fupleft, Coordinates fbotright)
+	Furniture (int id, Coordinates upleft, Coordinates botright ,Coordinates fupleft, Coordinates fbotright)
 	{
+		this.ID = id;
 		this.upperLeft = upleft;
 		this.bottomRight = botright;
 		this.finalUpperLeft = fupleft;
@@ -69,10 +138,12 @@ class Door
 }
 public class logicStrips
 {
+	int IDCount = 1;
 	ArrayList <Wall> walls= new ArrayList<Wall>();
 	ArrayList <Furniture> furnitures= new ArrayList<Furniture>();
 	 public final int maxCol = 20;
 	 public final int maxRow = 12;
+	 public Pane[][] logicBoard;
 	 public Room room1 = new Room (new Coordinates(0,0), new Coordinates(7,4), new Door (new Coordinates(7,1), new Coordinates(8,3)),  new Door (new Coordinates(2,4), new Coordinates(5,5)));
 	 public Room room2 = new Room (new Coordinates(0,5), new Coordinates(7,11), new Door (new Coordinates(2,4), new Coordinates(5,5)),  new Door (new Coordinates(7,5), new Coordinates(8,10)));
 	 public Room room3 = new Room (new Coordinates(8,0), new Coordinates(19,11), new Door (new Coordinates(7,1), new Coordinates(8,3)),  new Door (new Coordinates(7,5), new Coordinates(8,10)));
@@ -142,6 +213,16 @@ public class logicStrips
     		for(int j = furniture.upperLeft.y; j <= furniture.bottomRight.y; j++)
     		{
     			logicBoard[i][j].setStyle(color);
+    			if(color == null){
+    				logicBoard[i][j].getChildren().clear();
+    			}
+    			else{
+    			    Label text=new Label("T"+Integer.toString(furniture.ID));
+    			    text.setAlignment(Pos.CENTER);
+        			logicBoard[i][j].getChildren().add(text);
+    			}
+    			
+    			
     		}
     	}
 	}

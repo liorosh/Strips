@@ -4,6 +4,7 @@ package application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -13,10 +14,11 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 
 public class stripsController {
 	Pane[][] logicBoard=new Pane[20][12];
-	Furniture furniture= new Furniture(new Coordinates(3,3),new Coordinates(5,6),new Coordinates(3,3),new Coordinates(5,6));
+	Furniture furniture= new Furniture(0, new Coordinates(3,3),new Coordinates(5,6),new Coordinates(3,3),new Coordinates(5,6));
 	logicStrips logic = new logicStrips();
 	
 	
@@ -103,7 +105,8 @@ public class stripsController {
     	int ix4 = Integer.valueOf(x4.getText());
     	int iy3 = Integer.valueOf(y3.getText());
     	int iy4 = Integer.valueOf(y4.getText());
-    	Furniture fur = new Furniture(new Coordinates(ix1,iy1),new Coordinates(ix2,iy2),new Coordinates(ix3,iy3),new Coordinates(ix4,iy4));
+    	Furniture fur = new Furniture(logic.IDCount, new Coordinates(ix1,iy1),new Coordinates(ix2,iy2),new Coordinates(ix3,iy3),new Coordinates(ix4,iy4));
+    	logic.IDCount++;
     	logic.furnitures.add(fur);
     	x1.setText("");
     	x2.setText("");
@@ -136,6 +139,7 @@ public class stripsController {
     			Pane guiItem = new Pane ();
     			logicBoard[i][j] = guiItem;
     			board.add(guiItem, i, j);
+    			
     		}
     	}
     	logic.setWalls();
