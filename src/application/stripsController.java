@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -12,16 +13,20 @@ import javafx.stage.Popup;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 
 public class stripsController {
 	Pane[][] logicBoard=new Pane[20][12];
-	Furniture furniture= new Furniture(0, new Coordinates(3,3),new Coordinates(5,6),new Coordinates(3,3),new Coordinates(5,6));
-	logicStrips logic = new logicStrips();
+	logicStrips logic =  logicStrips.getInstance();
+	CalculateStack calc;
+	ObservableList<String> stackItems= FXCollections.observableArrayList();
 	
-	
+    @FXML
+    private Button start;
 	
     @FXML
     private TextField x1;
@@ -46,6 +51,10 @@ public class stripsController {
 
     @FXML
     private TextField x2;
+    
+    @FXML
+    private ListView<String> stackCalc;
+
 
 	@FXML
     private Button up,down,rotateleft,rotateright,moveright,moveleft,addFurniture;
@@ -56,31 +65,31 @@ public class stripsController {
     @FXML
     void left(ActionEvent event)
     {
-		logic.move(logicBoard,furniture,0,-1);
+		//logic.move(logicBoard,furniture,0,-1);
     }
 
     @FXML
     void right(ActionEvent event)
     {
-		logic.move(logicBoard, furniture,0,1);
+		//logic.move(logicBoard, furniture,0,1);
     }
 
     @FXML
     void up(ActionEvent event)
     {
-		logic.move(logicBoard,furniture,-1,0);
+		//logic.move(logicBoard,furniture,-1,0);
     }
 
     @FXML
     void down(ActionEvent event)
     {
-		logic.move(logicBoard,furniture,1,0);
+		//logic.move(logicBoard,furniture,1,0);
     }
 
     @FXML
     void rotateleft(ActionEvent event)
     {
-		logic.leftrotateFurniture(logicBoard,furniture);
+		//logic.leftrotateFurniture(logicBoard,furniture);
     }
     
     @FXML
@@ -91,7 +100,7 @@ public class stripsController {
     @FXML
     void rotateright(ActionEvent event)
     {
-		logic.rightrotateFurniture(logicBoard,furniture);
+		//logic.rightrotateFurniture(logicBoard,furniture);
     }
 
     @FXML
@@ -143,12 +152,20 @@ public class stripsController {
     		}
     	}
     	logic.setWalls();
-    	for(int i = furniture.upperLeft.x; i <= furniture.bottomRight.x ;i++)
-    	{
-    		for(int j = furniture.upperLeft.y; j <= furniture.bottomRight.y; j++)
-    		{
-    			logicBoard[i][j].setStyle("-fx-background-color:#dae753;");
-    		}
-    	}
+ 
+    	//stackCalc = new ListView<String>();
     }
+    
+    @FXML
+    void Start(ActionEvent event) {
+    	calc= new CalculateStack(stackItems, stackCalc,logicBoard);
+    	/*stackItems.add("c");
+    	stackItems.add("a");
+    	stackItems.add("b");
+    	stackItems.add
+    	System.out.println("fgfgh");
+    	stackCalc.setItems(stackItems);*/
+    
+    }
+
 }

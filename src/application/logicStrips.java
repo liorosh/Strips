@@ -12,73 +12,39 @@ class Coordinates
 {
 	int x;
 	int y;
+	Coordinates()
+	{
+	}
 	Coordinates(int x, int y)
 	{
 		this.x = x;
 		this.y = y;
 	}
-}
-
-class StackItem{
-	Furniture fur;
-	
-}
-
-class Action extends StackItem{
-	public enum direction{
-		LEFT, RIGHT, UP, DOWN, ROTATELEFT, ROTATERIGHT 
-	}
-	direction moveDirection;
-	logicStrips logic;
-	public void move( Furniture furniture,int upAndDown,int leftAndRight)
-	{
-		logic.handleFurniture(logic.logicBoard,furniture,null);
-		Coordinates newUpLeft=new Coordinates(furniture.upperLeft.x+leftAndRight,furniture.upperLeft.y+upAndDown);
-		Coordinates newBotRight=new Coordinates(furniture.bottomRight.x+leftAndRight,furniture.bottomRight.y+upAndDown);
-		furniture.upperLeft = newUpLeft;
-		furniture.bottomRight = newBotRight;
-		logic.handleFurniture(logic.logicBoard,furniture,"-fx-background-color:#dae753;");
-	}
-	public void rightrotateFurniture( Furniture furniture)
-	{
-		logic.handleFurniture(logic.logicBoard,furniture,null);
-		int centerX = (furniture.upperLeft.x + furniture.bottomRight.x) / 2;
-		int centerY = (furniture.upperLeft.y + furniture.bottomRight.y) / 2;
-		Coordinates newUpLeft=new Coordinates(centerX  + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
-		Coordinates newBotRight=new Coordinates(centerX  + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
-		if ((furniture.bottomRight.x - furniture.upperLeft.x) > (furniture.bottomRight.y - furniture.upperLeft.y)){
-			newUpLeft.x++;
-			newBotRight.x++;
+	public boolean equals(Coordinates coord){
+		if (this.x==coord.x && this.y==coord.y){
+			return true;
 		}
-		furniture.upperLeft = newUpLeft;
-		furniture.bottomRight = newBotRight;
-		System.out.println(furniture.upperLeft.x + " " + furniture.upperLeft.y);
-		
-		logic.handleFurniture(logic.logicBoard,furniture,"-fx-background-color:#dae753;");
-	}
-
-	public void leftrotateFurniture( Furniture furniture)
-	{
-		logic.handleFurniture(logic.logicBoard,furniture,null);
-		int centerX = ((furniture.upperLeft.x + furniture.bottomRight.x)) / 2;
-		int centerY = ((furniture.upperLeft.y + furniture.bottomRight.y)) / 2;
-		Coordinates newUpLeft=new Coordinates(centerX + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
-		Coordinates newBotRight=new Coordinates(centerX  + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
-		if ((furniture.bottomRight.x - furniture.upperLeft.x) < (furniture.bottomRight.y - furniture.upperLeft.y)){
-			newUpLeft.x--;
-			newBotRight.x--;
-		}
-	
-		furniture.upperLeft = newUpLeft;
-		furniture.bottomRight = newBotRight;
-		System.out.println(centerX + " " + centerY);
-		
-		logic.handleFurniture(logic.logicBoard,furniture,"-fx-background-color:#dae753;");
+		return false;
 	}
 }
 
-class Precond extends StackItem{
+
+class Location
+{
+	Coordinates upLeft;
+	Coordinates btRight;
+	Location(){
+		
+	}
+	Location(Coordinates upLeft, Coordinates btRight){
+		this.upLeft = upLeft;
+		this.btRight = btRight;
+		
+	}
 	
+	public String toString(){
+		return "(" + Integer.toString(upLeft.x)+", "+Integer.toString(upLeft.y)+"),("+Integer.toString(btRight.x)+", "+Integer.toString(btRight.y)+")";
+	}
 }
 
 class Room
@@ -126,6 +92,10 @@ class Wall
 		this.secondPos = second;
 	}
 }
+
+enum direction{
+	 RIGHT,LEFT, UP, DOWN, ROTATELEFT, ROTATERIGHT 
+}
 class Door
 {
 	Coordinates upperLeftPos;
@@ -147,64 +117,17 @@ public class logicStrips
 	 public Room room1 = new Room (new Coordinates(0,0), new Coordinates(7,4), new Door (new Coordinates(7,1), new Coordinates(8,3)),  new Door (new Coordinates(2,4), new Coordinates(5,5)));
 	 public Room room2 = new Room (new Coordinates(0,5), new Coordinates(7,11), new Door (new Coordinates(2,4), new Coordinates(5,5)),  new Door (new Coordinates(7,5), new Coordinates(8,10)));
 	 public Room room3 = new Room (new Coordinates(8,0), new Coordinates(19,11), new Door (new Coordinates(7,1), new Coordinates(8,3)),  new Door (new Coordinates(7,5), new Coordinates(8,10)));
-	public void rightrotateFurniture(Pane[][] logicBoard, Furniture furniture)
-	{
-		handleFurniture(logicBoard,furniture,null);
-		int centerX = (furniture.upperLeft.x + furniture.bottomRight.x) / 2;
-		int centerY = (furniture.upperLeft.y + furniture.bottomRight.y) / 2;
-		Coordinates newUpLeft=new Coordinates(centerX  + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
-		Coordinates newBotRight=new Coordinates(centerX  + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
-		if ((furniture.bottomRight.x - furniture.upperLeft.x) > (furniture.bottomRight.y - furniture.upperLeft.y)){
-			newUpLeft.x++;
-			newBotRight.x++;
-		}
-		if (checkValidity(newUpLeft,newBotRight))
-		{
-			furniture.upperLeft = newUpLeft;
-			furniture.bottomRight = newBotRight;
-			System.out.println(furniture.upperLeft.x + " " + furniture.upperLeft.y);
-		}
-		handleFurniture(logicBoard,furniture,"-fx-background-color:#dae753;");
-	}
+	  private static logicStrips instance = null;
+	   protected logicStrips() {
+	      // Exists only to defeat instantiation.
+	   }
+	   public static logicStrips getInstance() {
+	      if(instance == null) {
+	         instance = new logicStrips();
+	      }
+	      return instance;
+	   }
 
-	public void leftrotateFurniture(Pane[][] logicBoard, Furniture furniture)
-	{
-    	handleFurniture(logicBoard,furniture,null);
-		int centerX = ((furniture.upperLeft.x + furniture.bottomRight.x)) / 2;
-		int centerY = ((furniture.upperLeft.y + furniture.bottomRight.y)) / 2;
-		Coordinates newUpLeft=new Coordinates(centerX + (furniture.upperLeft.y - centerY),centerY - (centerX - furniture.upperLeft.x));
-		Coordinates newBotRight=new Coordinates(centerX  + (furniture.bottomRight.y - centerY), centerY + (furniture.bottomRight.x - centerX));
-		if ((furniture.bottomRight.x - furniture.upperLeft.x) < (furniture.bottomRight.y - furniture.upperLeft.y)){
-			newUpLeft.x--;
-			newBotRight.x--;
-		}
-		if (checkValidity(newUpLeft,newBotRight))
-		{
-			furniture.upperLeft = newUpLeft;
-			furniture.bottomRight = newBotRight;
-			System.out.println(centerX + " " + centerY);
-		}
-		handleFurniture(logicBoard,furniture,"-fx-background-color:#dae753;");
-	}
-	public void move(Pane[][] logicBoard, Furniture furniture,int upAndDown,int leftAndRight)
-	{
-		handleFurniture(logicBoard,furniture,null);
-		Coordinates newUpLeft=new Coordinates(furniture.upperLeft.x+leftAndRight,furniture.upperLeft.y+upAndDown);
-		Coordinates newBotRight=new Coordinates(furniture.bottomRight.x+leftAndRight,furniture.bottomRight.y+upAndDown);
-		if (checkValidity(newUpLeft,newBotRight))
-		{
-			furniture.upperLeft = newUpLeft;
-			furniture.bottomRight = newBotRight;
-		}
-		handleFurniture(logicBoard,furniture,"-fx-background-color:#dae753;");
-	}
-	public boolean checkValidity(Coordinates upleft,Coordinates downright)
-	{
-
-		return (upleft.x<this.maxCol && upleft.x>=0 ) && (downright.x<this.maxCol && downright.x>=0) &&
-				(upleft.y<this.maxRow && upleft.y>=0) &&(downright.y<this.maxRow && downright.y>=0) &&
-				checkForWalls(upleft,downright,walls) /*&&checkForFurniture(upleft,downright,obstacles*/;
-	}
 
 	public void handleFurniture(Pane[][] logicBoard, Furniture furniture, String color)
 	{
