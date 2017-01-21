@@ -20,9 +20,11 @@ public abstract class StackItem {
 	public boolean checkValidity(Coordinates newupleft, Coordinates newdownright)
 	{
 
-		return (newupleft.x<logic.maxCol && newupleft.x>=0 ) && (newdownright.x<logic.maxCol && newdownright.x>=0) &&
+		/*return (newupleft.x<logic.maxCol && newupleft.x>=0 ) && (newdownright.x<logic.maxCol && newdownright.x>=0) &&
 				(newupleft.y<logic.maxRow && newupleft.y>=0) &&(newdownright.y<logic.maxRow && newdownright.y>=0) &&
-				logic.checkForWalls(newupleft,newdownright,logic.walls) /*&&checkForFurniture(upleft,downright,obstacles*/;
+				logic.checkForWalls(newupleft,newdownright,logic.walls) ;*/
+		return logic.checkValidity(newupleft, newdownright);
+		
 	}
 	public abstract String toString();
 	
@@ -272,6 +274,38 @@ class Action extends StackItem
 		
 		logic.handleFurniture(logicBoard,fur,"-fx-background-color:#dae753;");
 	}
+}
+
+class PrecondCanMoveFur extends StackItem{
+	Location destination;
+	direction dir;
+	PrecondCanMoveFur(Furniture fur , Location dest , direction dir) {
+		super(fur);
+		destination = dest;
+		this.dir = dir;
+		
+	}
+	
+	public Furniture isOverlapFur(){
+		for (Furniture furn : logic.furnitures){
+			if (furn.ID!=fur.ID){
+				if (furn.upperLeft.x <= destination.btRight.x && furn.bottomRight.x >= destination.upLeft.x &&
+						furn.upperLeft.y <= destination.btRight.y && furn.bottomRight.y >= destination.upLeft.y)
+					return furn;
+				
+			}
+			
+		}
+		return null;
+	}
+	
+
+
+	@Override
+	public String toString() {
+		return "isFurniture(" +Integer.toString(fur.ID) + ", "+ destination.toString() + ")";
+	}
+	
 }
 
 class PrecondCanMoveWall extends StackItem{

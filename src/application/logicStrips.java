@@ -20,12 +20,18 @@ class Coordinates
 		this.x = x;
 		this.y = y;
 	}
-	public boolean equals(Coordinates coord){
-		if (this.x==coord.x && this.y==coord.y){
-			return true;
-		}
-		return false;
+	
+	@Override
+	  public boolean equals(Object ob) {
+	    if (ob == null) return false;
+	    if (ob.getClass() != getClass()) return false;
+	    Coordinates other = (Coordinates)ob;
+	    if (!(x==other.x)) return false;
+	    if (!(y==other.y)) return false;
+	  
+	    return true;
 	}
+	
 }
 
 
@@ -81,6 +87,7 @@ class Furniture
 	Coordinates finalBottomRight;
 	Coordinates diff;
 	boolean needRotate;
+	int unplannedMove=0;
 
 	Furniture (int id, Coordinates upleft, Coordinates botright ,Coordinates fupleft, Coordinates fbotright)
 	{
@@ -91,6 +98,17 @@ class Furniture
 		this.finalBottomRight = fbotright;
 		/*this.diff.x = fupleft.x - upleft.x;
 		this.diff.y = fbotright.y - botright.y;*/
+	}
+	
+	  public boolean equals(Object ob) {
+		    if (ob == null) return false;
+		    if (ob.getClass() != getClass()) return false;
+		    Furniture other = (Furniture)ob;
+		    if (!(ID==other.ID)) return false;
+		    return true;
+		}
+	public boolean isInPlace(){
+		return ((upperLeft.equals(finalUpperLeft)) && (bottomRight.equals(finalBottomRight)));
 	}
 }
 class Wall
@@ -125,6 +143,7 @@ public class logicStrips
 	 public final int maxCol = 20;
 	 public final int maxRow = 12;
 	 public Pane[][] logicBoard;
+	 int furNotInPlace=0;
 	 public Room room1 = new Room (new Coordinates(0,0), new Coordinates(7,4), new Door (new Coordinates(7,1), new Coordinates(8,3)),  new Door (new Coordinates(2,4), new Coordinates(5,5)));
 	 public Room room2 = new Room (new Coordinates(0,5), new Coordinates(7,11), new Door (new Coordinates(2,4), new Coordinates(5,5)),  new Door (new Coordinates(7,5), new Coordinates(8,10)));
 	 public Room room3 = new Room (new Coordinates(8,0), new Coordinates(19,11), new Door (new Coordinates(7,1), new Coordinates(8,3)),  new Door (new Coordinates(7,5), new Coordinates(8,10)));
@@ -171,6 +190,14 @@ public class logicStrips
     	walls.add(new Wall(new Coordinates(1,4), new Coordinates(1,5)));
     	walls.add(new Wall(new Coordinates(6,4), new Coordinates(6,5)));
     	walls.add(new Wall(new Coordinates(7,4), new Coordinates(7,5)));
+	}
+	
+	public boolean checkValidity(Coordinates newupleft, Coordinates newdownright)
+	{
+
+		return (newupleft.x<maxCol && newupleft.x>=0 ) && (newdownright.x<maxCol && newdownright.x>=0) &&
+				(newupleft.y<maxRow && newupleft.y>=0) &&(newdownright.y<maxRow && newdownright.y>=0) &&
+				checkForWalls(newupleft,newdownright,walls) /*&&checkForFurniture(upleft,downright,obstacles*/;
 	}
 	public boolean checkForWalls(Coordinates upleft,Coordinates downright,ArrayList<Wall> walls)
 	{

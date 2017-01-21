@@ -1,6 +1,8 @@
 package application;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
@@ -32,10 +34,22 @@ public class CalculateStack {
 		while (!opStack.isEmpty() && (counter==0)){
 			counter =1;
 			if (opStack.peek() instanceof  PrecondAT){
-				if (((PrecondAT)opStack.peek()).isSatisfied()){
+				PrecondAT precond = ((PrecondAT)opStack.peek());
+				if (precond.isSatisfied()){
+					/*if (precond.fur.isInPlace()&& (opStack.size() <= logic.furnitures.size())){
+						logic.furnitures.remove(precond.fur);
+						logic.furnitures.add(0, precond.fur);
+						opStack.clear();
+						for(Furniture fur: logic.furnitures){
+							PrecondAT prec = new PrecondAT(fur, new Location(fur.finalUpperLeft, fur.finalBottomRight),null);
+							pushAndDisp(prec);
+						}
+						
+					}else{*/
 					opStack.pop();
 					popAndDisp();
 					continue;
+					//}
 				}
 				else{
 					Action move = new Action(opStack.peek().fur, ((PrecondAT)opStack.peek()).location, logicBoard, ((PrecondAT)opStack.peek()).from);
@@ -45,6 +59,32 @@ public class CalculateStack {
 					continue;
 				}
 			}
+			if (opStack.peek() instanceof  PrecondCanMoveFur){
+				Furniture fur = ((PrecondCanMoveFur)opStack.peek()).isOverlapFur();
+				if (fur!=null){
+					Location loc = findNextFurLoc(fur , ((PrecondCanMoveFur)opStack.peek()).dir);
+					while (!logic.checkValidity(loc.upLeft, loc.btRight)){
+						loc = findNextFurLoc(fur , ((PrecondCanMoveFur)opStack.peek()).dir);
+						if (loc == null){
+							while (!(opStack.peek()instanceof Action)){
+								opStack.pop();
+								popAndDisp();
+							}
+							((Action)opStack.peek()).getNextDir();
+							pushPreConds((Action)opStack.peek());
+							return;
+						}
+					}
+					fur.unplannedMove = 0;
+					PrecondAT prec = new PrecondAT(fur, loc,null);
+					pushAndDisp(prec);
+				}else{
+					opStack.pop();
+					popAndDisp();
+					continue;
+				}
+			}
+			
 			if (opStack.peek() instanceof  PrecondCanMoveWall){
 				if (((PrecondCanMoveWall)opStack.peek()).isSatisfied()){
 					opStack.pop();
@@ -79,9 +119,97 @@ public class CalculateStack {
 			}
 			
 		}
+		if (opStack.isEmpty()){
+			for(Furniture fur: logic.furnitures){
+				if (!fur.isInPlace()){
+					PrecondAT prec = new PrecondAT(fur, new Location(fur.finalUpperLeft, fur.finalBottomRight),null);
+					pushAndDisp(prec);
+					logic.furNotInPlace++;
+				}
+			
+			}
+			if (logic.furNotInPlace == 0){
+				System.out.println("Yaaayyyy");
+				return;
+			}
+			startCalculations(0);
+			
+		}
 		System.out.println("finished");
 	}
 	
+	
+	public Location findNextFurLoc(Furniture fur , direction dir){
+		Location loc= new Location();
+		loc.upLeft = new Coordinates();
+		loc.btRight = new Coordinates();
+		loc.upLeft.x = fur.upperLeft.x;
+		loc.upLeft.y = fur.upperLeft.y;
+		loc.btRight.x = fur.bottomRight.x;
+		loc.btRight.y = fur.bottomRight.y;
+		ArrayList<Integer> directions = new ArrayList<Integer>();
+		directions.add(1);
+		directions.add(2);
+		directions.add(3);
+		directions.add(4);
+		if (dir == direction.LEFT || dir == direction.ROTATELEFT){
+			directions.remove(0);
+		}
+		if (dir == direction.RIGHT || dir == direction.ROTATERIGHT){
+			directions.remove(1);
+		}
+		if (dir == direction.UP){
+			directions.remove(2);
+		}
+		if (dir == direction.DOWN || dir == direction.DOWN){
+			directions.remove(3);
+		}
+		//if (((fur.finalUpperLeft.x - fur.upperLeft.x==0))&&((fur.finalUpperLeft.y - fur.upperLeft.y)==0)){
+			if (fur.unplannedMove>2)
+				return null;
+			int n = directions.get(fur.unplannedMove);
+			if (n ==1){
+				loc.upLeft.x=loc.upLeft.x+4;
+				loc.btRight.x=loc.btRight.x+4;
+			}
+			if (n ==2){
+				loc.upLeft.x=loc.upLeft.x-4;
+				loc.btRight.x=loc.btRight.x-4;
+			}
+			if (n ==3){
+				loc.upLeft.y=loc.upLeft.y-4;
+				loc.btRight.y=loc.btRight.y-4;
+			}
+			if (n ==4){
+				loc.upLeft.y=loc.upLeft.y+4;
+				loc.btRight.y=loc.btRight.y+4;
+			}
+			fur.unplannedMove++;
+			return loc;
+		//}
+		/*loc.upLeft.x = (fur.upperLeft.x+fur.finalUpperLeft.x)/2;
+		loc.upLeft.y = (fur.upperLeft.y+fur.finalUpperLeft.y)/2;
+		loc.btRight.x = (fur.bottomRight.x+fur.finalBottomRight.x)/2;
+		loc.btRight.y = (fur.bottomRight.y+fur.finalBottomRight.y)/2;
+		/*if ((fur.finalUpperLeft.x - fur.upperLeft.x)<0){
+			loc.upLeft.x-=fur.unplannedMove+1;
+			loc.btRight.x-=fur.unplannedMove+1;
+		}
+		else{
+			loc.upLeft.x+=fur.unplannedMove+1;
+			loc.btRight.x+=fur.unplannedMove+1;
+		}
+		if((fur.finalUpperLeft.y - fur.upperLeft.y)<0){
+			loc.upLeft.y-=fur.unplannedMove+1;
+			loc.btRight.y-=fur.unplannedMove+1;
+		}else{
+			loc.upLeft.y+=fur.unplannedMove+1;
+			loc.btRight.y+=fur.unplannedMove+1;
+		}
+		fur.unplannedMove++;
+		*/
+		//return loc;
+	}
 	public void pushPreConds(Action move){
 		Location loc = new Location();
 		direction oposite = null;
@@ -155,6 +283,7 @@ public class CalculateStack {
 			pushPreConds(((Action)opStack.peek()));
 			return;
 		}
+		pushAndDisp(new PrecondCanMoveFur(move.fur, move.destination , move.moveDirection));
 		pushAndDisp(precond);
 		pushAndDisp(new PrecondCanMoveWall(move.fur,move.moveDirection, move.destination));
 		pushAndDisp(new IsValidPlace(loc));

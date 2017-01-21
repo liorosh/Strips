@@ -117,6 +117,11 @@ public class stripsController {
     	int ix4 = Integer.valueOf(x4.getText());
     	int iy3 = Integer.valueOf(y3.getText());
     	int iy4 = Integer.valueOf(y4.getText());
+    	int width1 = Math.abs(ix2-ix1);
+    	int hight1 = Math.abs(iy2-iy1);
+    	int width2 = Math.abs(ix4-ix3);
+    	int hight2 = Math.abs(iy4-iy3);
+    	if ((width1==width2 && hight1 == hight2)||(width1 == hight2 && width2 == hight1)){
     	Furniture fur = new Furniture(logic.IDCount, new Coordinates(ix1,iy1),new Coordinates(ix2,iy2),new Coordinates(ix3,iy3),new Coordinates(ix4,iy4));
     	logic.IDCount++;
     	logic.furnitures.add(fur);
@@ -129,6 +134,9 @@ public class stripsController {
     	y2.setText("");
     	y3.setText("");
     	logic.handleFurniture(logicBoard,fur, "-fx-background-color:#2E64FE;");
+    	}else{
+    		System.out.println("not same size");
+    	}
     	//System.out.println(String.valueOf(logic.findDistance(new Coordinates(4,8), new Coordinates(7,10))));
     	//Popup pop=new Popup();
     	//pop.is
