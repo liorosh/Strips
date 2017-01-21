@@ -17,6 +17,13 @@ public abstract class StackItem {
 		return fur;
 		 
 	}
+	public boolean checkValidity(Coordinates newupleft, Coordinates newdownright)
+	{
+
+		return (newupleft.x<logic.maxCol && newupleft.x>=0 ) && (newdownright.x<logic.maxCol && newdownright.x>=0) &&
+				(newupleft.y<logic.maxRow && newupleft.y>=0) &&(newdownright.y<logic.maxRow && newdownright.y>=0) &&
+				logic.checkForWalls(newupleft,newdownright,logic.walls) /*&&checkForFurniture(upleft,downright,obstacles*/;
+	}
 	public abstract String toString();
 	
 }
@@ -28,11 +35,13 @@ class Action extends StackItem
 	int upAndDown;
 	int leftAndRight;
 	Pane[][] logicBoard;
-	Action(Furniture fur , Location loc, Pane[][] logicBoard)
+	direction from;
+	Action(Furniture fur , Location loc, Pane[][] logicBoard , direction from)
 	{
 		super(fur);
 		this.logicBoard = logicBoard;
 		this.destination = loc;
+		this.from = from;
 		fillStack();
 	}
 	public void fillStack(){
@@ -47,14 +56,12 @@ class Action extends StackItem
 					if (!needRotate){
 						dirList.add(direction.LEFT);
 						dirList.add(direction.UP);
-						dirList.add(direction.ROTATELEFT);
 						dirList.add(direction.ROTATERIGHT);
 						dirList.add(direction.DOWN);
 						dirList.add(direction.RIGHT);
 					}else{
 						dirList.add(direction.LEFT);
 						dirList.add(direction.UP);
-						dirList.add(direction.ROTATELEFT);
 						dirList.add(direction.DOWN);
 						dirList.add(direction.RIGHT);
 						dirList.add(direction.ROTATERIGHT);
@@ -63,7 +70,6 @@ class Action extends StackItem
 					if (!needRotate){
 							dirList.add(direction.UP);
 							dirList.add(direction.LEFT);
-							dirList.add(direction.ROTATERIGHT);
 							dirList.add(direction.ROTATELEFT);
 							dirList.add(direction.RIGHT);
 							dirList.add(direction.DOWN);
@@ -71,27 +77,23 @@ class Action extends StackItem
 					else{
 						dirList.add(direction.UP);
 						dirList.add(direction.LEFT);
-						dirList.add(direction.ROTATELEFT);
-						dirList.add(direction.ROTATERIGHT);
 						dirList.add(direction.RIGHT);
 						dirList.add(direction.DOWN);
 						dirList.add(direction.ROTATERIGHT);
 					}
 			}
 		}
-		else if ((xDiff<0) && (yDiff<0)){
-			if (xDiff<yDiff){
+		else if ((xDiff<=0) && (yDiff<=0)){
+			if (Math.abs(xDiff)>Math.abs(yDiff)){
 				if (!needRotate){
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.DOWN);
-					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.ROTATELEFT);
 					dirList.add(direction.UP);
 					dirList.add(direction.LEFT);
 				}else{
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.DOWN);
-					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.UP);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.ROTATELEFT);
@@ -100,7 +102,6 @@ class Action extends StackItem
 				if (!needRotate){
 					dirList.add(direction.DOWN);
 					dirList.add(direction.RIGHT);
-					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.ROTATELEFT);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.UP);
@@ -109,7 +110,6 @@ class Action extends StackItem
 				else{
 					dirList.add(direction.DOWN);
 					dirList.add(direction.RIGHT);
-					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.UP);
 					dirList.add(direction.ROTATELEFT);
@@ -121,7 +121,6 @@ class Action extends StackItem
 				if (!needRotate){
 				dirList.add(direction.RIGHT);
 				dirList.add(direction.UP);
-				dirList.add(direction.ROTATERIGHT);
 				dirList.add(direction.ROTATELEFT);
 				dirList.add(direction.DOWN);
 				dirList.add(direction.LEFT);
@@ -129,7 +128,6 @@ class Action extends StackItem
 				
 						dirList.add(direction.RIGHT);
 						dirList.add(direction.UP);
-						dirList.add(direction.ROTATERIGHT);
 						dirList.add(direction.DOWN);
 						dirList.add(direction.LEFT);
 						dirList.add(direction.ROTATELEFT);
@@ -138,14 +136,12 @@ class Action extends StackItem
 				if (!needRotate){
 				dirList.add(direction.UP);
 				dirList.add(direction.RIGHT);
-				dirList.add(direction.ROTATERIGHT);
 				dirList.add(direction.ROTATELEFT);
 				dirList.add(direction.LEFT);
 				dirList.add(direction.DOWN);
 				}else{
 					dirList.add(direction.UP);
 					dirList.add(direction.RIGHT);
-					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.DOWN);
 					dirList.add(direction.ROTATELEFT);
@@ -158,36 +154,33 @@ class Action extends StackItem
 			
 			if (Math.abs(yDiff)<xDiff){
 				if (!needRotate){
-				dirList.add(direction.RIGHT);
-				dirList.add(direction.UP);
-				dirList.add(direction.ROTATERIGHT);
-				dirList.add(direction.ROTATELEFT);
-				dirList.add(direction.DOWN);
 				dirList.add(direction.LEFT);
+				dirList.add(direction.DOWN);
+				dirList.add(direction.ROTATERIGHT);
+				dirList.add(direction.UP);
+				dirList.add(direction.RIGHT);
 				}else{
 				
-						dirList.add(direction.RIGHT);
-						dirList.add(direction.UP);
-						dirList.add(direction.ROTATERIGHT);
-						dirList.add(direction.DOWN);
-						dirList.add(direction.LEFT);
-						dirList.add(direction.ROTATELEFT);
+					dirList.add(direction.LEFT);
+					dirList.add(direction.DOWN);
+					dirList.add(direction.UP);
+					dirList.add(direction.RIGHT);
+					dirList.add(direction.ROTATERIGHT);
 				}
 			}else{
 				if (!needRotate){
-				dirList.add(direction.RIGHT);
-				dirList.add(direction.UP);
-				dirList.add(direction.ROTATERIGHT);
-				dirList.add(direction.ROTATELEFT);
-				dirList.add(direction.DOWN);
-				dirList.add(direction.UP);
+					dirList.add(direction.DOWN);
+					dirList.add(direction.LEFT);
+					dirList.add(direction.ROTATERIGHT);
+					dirList.add(direction.RIGHT);
+					dirList.add(direction.UP);
+				
 				}else{
+					dirList.add(direction.DOWN);
+					dirList.add(direction.LEFT);
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.UP);
 					dirList.add(direction.ROTATERIGHT);
-					dirList.add(direction.DOWN);
-					dirList.add(direction.LEFT);
-					dirList.add(direction.ROTATELEFT);
 				}
 				
 			}
@@ -196,7 +189,11 @@ class Action extends StackItem
 		
 	
 	public void getNextDir(){
+		/*if (from!=null)
+			dirList.remove(from);*/
 		moveDirection = dirList.remove(dirList.size()-1);
+		
+		
 	}
 	
 	public String toString(){
@@ -259,7 +256,7 @@ class Action extends StackItem
 
 	public void leftrotateFurniture()
 	{
-		logic.handleFurniture(logic.logicBoard,fur,null);
+		logic.handleFurniture(logicBoard,fur,null);
 		int centerX = ((fur.upperLeft.x + fur.bottomRight.x)) / 2;
 		int centerY = ((fur.upperLeft.y + fur.bottomRight.y)) / 2;
 		Coordinates newUpLeft=new Coordinates(centerX + (fur.upperLeft.y - centerY),centerY - (centerX - fur.upperLeft.x));
@@ -273,7 +270,7 @@ class Action extends StackItem
 		fur.bottomRight = newBotRight;
 		System.out.println(centerX + " " + centerY);
 		
-		logic.handleFurniture(logic.logicBoard,fur,"-fx-background-color:#dae753;");
+		logic.handleFurniture(logicBoard,fur,"-fx-background-color:#dae753;");
 	}
 }
 
@@ -294,9 +291,42 @@ class PrecondCanMoveWall extends StackItem{
 	public String toString(){
 		return "canMove(" + Integer.toString(fur.ID) + "," + moveDirection.toString()+")";
 	}
-	
+	public boolean wallBetween(Coordinates upleft, Coordinates btRight, direction dir ){
+		Coordinates newupleft = new Coordinates();
+		Coordinates newdownright = new Coordinates();
+		if (dir == direction.UP){
+			newupleft.x = upleft.x;
+			newupleft.y = upleft.y;
+			newdownright.x = btRight.x;
+			newdownright.y = btRight.y+1;
+			return (logic.checkForWalls(newupleft,newdownright,logic.walls));
+		}
+		if (dir == direction.DOWN){
+			newupleft.x = upleft.x;
+			newupleft.y = btRight.y-1;
+			newdownright.x = btRight.x;
+			newdownright.y = btRight.y;
+			return (logic.checkForWalls(newupleft,newdownright,logic.walls));
+		}
+		
+		if (dir == direction.RIGHT || dir == direction.RIGHT){
+			newupleft.x = btRight.x-1;
+			newupleft.y = upleft.y;
+			newdownright.x = btRight.x;
+			newdownright.y = btRight.y;
+			return (logic.checkForWalls(newupleft,newdownright,logic.walls));
+		}
+		if (dir == direction.LEFT || dir == direction.ROTATELEFT){
+			newupleft.x = upleft.x;
+			newupleft.y = upleft.y;
+			newdownright.x = upleft.x+1;
+			newdownright.y = btRight.y;
+			return (logic.checkForWalls(newupleft,newdownright,logic.walls));
+		}
+		return true;
+	}
 	public boolean isSatisfied(){
-		return checkValidity(dest.upLeft, dest.btRight);
+		return checkValidity(dest.upLeft, dest.btRight)&& wallBetween(dest.upLeft,dest.btRight, moveDirection);
 	}
 	
 	/*public void canMove(){
@@ -349,24 +379,27 @@ class PrecondCanMoveWall extends StackItem{
 	}*/
 	
 	
-	public boolean checkValidity(Coordinates newupleft, Coordinates newdownright)
-	{
-
-		return (newupleft.x<logic.maxCol && newupleft.x>=0 ) && (newdownright.x<logic.maxCol && newdownright.x>=0) &&
-				(newupleft.y<logic.maxRow && newupleft.y>=0) &&(newdownright.y<logic.maxRow && newdownright.y>=0) &&
-				logic.checkForWalls(newupleft,newdownright,logic.walls) /*&&checkForFurniture(upleft,downright,obstacles*/;
-	}
-	
 }
 
 class PrecondAT extends StackItem{
 	
 	Location location;
-	PrecondAT(Furniture fur, Location loc) {
+	direction from;
+	PrecondAT(Furniture fur, Location loc, direction from) {
 		super(fur);
 		this.location = loc;
+		this.from = from;
 		
 
+	}
+	@Override
+	  public boolean equals(Object ob) {
+	    if (ob == null) return false;
+	    if (ob.getClass() != getClass()) return false;
+	    PrecondAT other = (PrecondAT)ob;
+	    if (!location.equals(other.location)) return false;
+	    if (!(fur.ID == other.fur.ID)) return false;
+	    return true;
 	}
 	public boolean isSatisfied(){
 		return ((fur.upperLeft.equals(location.upLeft) )&&(fur.bottomRight.equals(location.btRight)));
@@ -375,6 +408,27 @@ class PrecondAT extends StackItem{
 	
 	public String toString(){
 		return "isAt(" + Integer.toString(fur.ID) + "," + location.toString()+")";
+	}
+	
+	
+}
+
+class IsValidPlace extends StackItem{
+	
+	Location location;
+	IsValidPlace( Location loc) {
+		super(null);
+		this.location = loc;
+		
+
+	}
+	public boolean isSatisfied(){
+		return (checkValidity(location.upLeft, location.btRight));
+	}
+	
+	
+	public String toString(){
+		return "canBeAt"+location.toString();
 	}
 	
 	

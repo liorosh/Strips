@@ -45,6 +45,16 @@ class Location
 	public String toString(){
 		return "(" + Integer.toString(upLeft.x)+", "+Integer.toString(upLeft.y)+"),("+Integer.toString(btRight.x)+", "+Integer.toString(btRight.y)+")";
 	}
+	
+	@Override
+	  public boolean equals(Object ob) {
+	    if (ob == null) return false;
+	    if (ob.getClass() != getClass()) return false;
+	    Location other = (Location)ob;
+	    if (!upLeft.equals(other.upLeft)) return false;
+	    if (!btRight.equals(other.btRight)) return false;
+	    return true;
+	}
 }
 
 class Room
@@ -71,6 +81,7 @@ class Furniture
 	Coordinates finalBottomRight;
 	Coordinates diff;
 	boolean needRotate;
+
 	Furniture (int id, Coordinates upleft, Coordinates botright ,Coordinates fupleft, Coordinates fbotright)
 	{
 		this.ID = id;

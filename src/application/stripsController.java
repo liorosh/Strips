@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 
+import java.awt.EventQueue;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -24,7 +25,7 @@ public class stripsController {
 	logicStrips logic =  logicStrips.getInstance();
 	CalculateStack calc;
 	ObservableList<String> stackItems= FXCollections.observableArrayList();
-	
+	int counter = 0;
     @FXML
     private Button start;
 	
@@ -55,7 +56,9 @@ public class stripsController {
     @FXML
     private ListView<String> stackCalc;
 
-
+    @FXML
+    private Button next;
+    
 	@FXML
     private Button up,down,rotateleft,rotateright,moveright,moveleft,addFurniture;
 
@@ -156,9 +159,13 @@ public class stripsController {
     	//stackCalc = new ListView<String>();
     }
     
+    
+    
     @FXML
     void Start(ActionEvent event) {
     	calc= new CalculateStack(stackItems, stackCalc,logicBoard);
+    	
+	
     	/*stackItems.add("c");
     	stackItems.add("a");
     	stackItems.add("b");
@@ -166,6 +173,11 @@ public class stripsController {
     	System.out.println("fgfgh");
     	stackCalc.setItems(stackItems);*/
     
+    }
+    @FXML
+    void next(ActionEvent event) {
+    	counter=0;
+    	calc.startCalculations(counter);
     }
 
 }

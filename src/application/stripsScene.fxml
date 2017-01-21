@@ -74,10 +74,10 @@
       <Button fx:id="up" layoutX="982.0" layoutY="95.0" mnemonicParsing="false" onAction="#up" text="Up" />
       <Button fx:id="down" layoutX="975.0" layoutY="120.0" mnemonicParsing="false" onAction="#down" styleClass="glyphicon glyphicon-arrow-up" text="Down" />
       <Button fx:id="addFurniture" layoutX="980.0" layoutY="430.0" mnemonicParsing="false" onAction="#addFurniture" text="add Furniture" />
-      <TextField layoutX="1016.0" layoutY="222.0" prefHeight="25.0" prefWidth="34.0" fx:id="x1" />
-      <TextField fx:id="y1" layoutX="1056.0" layoutY="222.0" prefHeight="25.0" prefWidth="34.0" />
-      <TextField layoutX="1016.0" layoutY="263.0" prefHeight="25.0" prefWidth="34.0" fx:id="x2" />
-      <TextField fx:id="y2" layoutX="1056.0" layoutY="263.0" prefHeight="25.0" prefWidth="34.0" />
+      <TextField layoutX="1016.0" layoutY="222.0" prefHeight="25.0" prefWidth="34.0" text="0" fx:id="x1" />
+      <TextField fx:id="y1" layoutX="1056.0" layoutY="222.0" prefHeight="25.0" prefWidth="34.0" text="0" />
+      <TextField layoutX="1016.0" layoutY="263.0" prefHeight="25.0" prefWidth="34.0" text="0" fx:id="x2" />
+      <TextField fx:id="y2" layoutX="1056.0" layoutY="263.0" prefHeight="25.0" prefWidth="34.0" text="3" />
       <Label layoutX="960.0" layoutY="178.0" text="Source Coordinates:" />
       <Label layoutX="931.0" layoutY="226.0" text="Upper left:" />
       <Label layoutX="930.0" layoutY="267.0" text="Buttom right:" />
@@ -91,12 +91,13 @@
       <Label layoutX="1021.0" layoutY="325.0" text="x" />
       <Label layoutX="932.0" layoutY="387.0" text="Buttom right:" />
       <Label layoutX="933.0" layoutY="346.0" text="Upper left:" />
-      <TextField fx:id="y4" layoutX="1058.0" layoutY="383.0" prefHeight="25.0" prefWidth="34.0" />
-      <TextField layoutX="1018.0" layoutY="383.0" prefHeight="25.0" prefWidth="34.0" fx:id="x4" />
-      <TextField fx:id="y3" layoutX="1058.0" layoutY="342.0" prefHeight="25.0" prefWidth="34.0" />
-      <TextField layoutX="1018.0" layoutY="342.0" prefHeight="25.0" prefWidth="34.0" fx:id="x3" />
+      <TextField fx:id="y4" layoutX="1058.0" layoutY="383.0" prefHeight="25.0" prefWidth="34.0" text="0" />
+      <TextField layoutX="1018.0" layoutY="383.0" prefHeight="25.0" prefWidth="34.0" text="11" fx:id="x4" />
+      <TextField fx:id="y3" layoutX="1058.0" layoutY="342.0" prefHeight="25.0" prefWidth="34.0" text="0" />
+      <TextField layoutX="1018.0" layoutY="342.0" prefHeight="25.0" prefWidth="34.0" text="8" fx:id="x3" />
       <Label layoutX="1064.0" layoutY="366.0" text="y" />
       <ListView fx:id="stackCalc" layoutX="687.0" layoutY="135.0" prefHeight="364.0" prefWidth="200.0" />
       <Button fx:id="start" layoutX="992.0" layoutY="487.0" mnemonicParsing="false" onAction="#Start" text="Start" />
+      <Button fx:id="next" layoutX="687.0" layoutY="71.0" mnemonicParsing="false" onAction="#next" text="Next" />
    </children>
 </AnchorPane>
