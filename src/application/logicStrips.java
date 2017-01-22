@@ -87,7 +87,10 @@ class Furniture
 	Coordinates finalBottomRight;
 	Coordinates diff;
 	boolean needRotate;
+	int width;
+	int hight;
 	int unplannedMove=0;
+	int timesBuped = 0;
 
 	Furniture (int id, Coordinates upleft, Coordinates botright ,Coordinates fupleft, Coordinates fbotright)
 	{
@@ -178,6 +181,36 @@ public class logicStrips
     			
     		}
     	}
+	}
+	
+	public void leftRotate(Location loc){
+		int centerX = ((loc.upLeft.x + loc.btRight.x)) / 2;
+		int centerY = ((loc.upLeft.y + loc.btRight.y)) / 2;
+		Coordinates newUpLeft=new Coordinates(centerX + (loc.upLeft.y - centerY),centerY - (centerX - loc.upLeft.x));
+		Coordinates newBotRight=new Coordinates(centerX  + (loc.btRight.y - centerY), centerY + (loc.btRight.x - centerX));
+		if ((loc.btRight.x - loc.btRight.x) < (loc.btRight.y - loc.upLeft.y)){
+			newUpLeft.x--;
+			newBotRight.x--;
+		}
+	
+		loc.upLeft = newUpLeft;
+		loc.btRight = newBotRight;
+		
+	}
+	
+	public void RightRotate(Location loc){
+		int centerX = ((loc.upLeft.x + loc.btRight.x)) / 2;
+		int centerY = ((loc.upLeft.y + loc.btRight.y)) / 2;
+		Coordinates newUpLeft=new Coordinates(centerX + (loc.upLeft.y - centerY),centerY - (centerX - loc.upLeft.x));
+		Coordinates newBotRight=new Coordinates(centerX  + (loc.btRight.y - centerY), centerY + (loc.btRight.x - centerX));
+		if ((loc.btRight.x - loc.btRight.x) < (loc.btRight.y - loc.upLeft.y)){
+			newUpLeft.x++;
+			newBotRight.x++;
+		}
+	
+		loc.upLeft = newUpLeft;
+		loc.btRight = newBotRight;
+		
 	}
 
 	public void setWalls()

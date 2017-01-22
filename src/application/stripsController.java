@@ -123,6 +123,8 @@ public class stripsController {
     	int hight2 = Math.abs(iy4-iy3);
     	if ((width1==width2 && hight1 == hight2)||(width1 == hight2 && width2 == hight1)){
     	Furniture fur = new Furniture(logic.IDCount, new Coordinates(ix1,iy1),new Coordinates(ix2,iy2),new Coordinates(ix3,iy3),new Coordinates(ix4,iy4));
+    	fur.width = width1;
+    	fur.hight = hight1;
     	logic.IDCount++;
     	logic.furnitures.add(fur);
     	x1.setText("");
@@ -137,6 +139,61 @@ public class stripsController {
     	}else{
     		System.out.println("not same size");
     	}
+    	/*Furniture fur = new Furniture(logic.IDCount, new Coordinates(15,1),new Coordinates(18,3),new Coordinates(1,8),new Coordinates(4,10));
+    	int width1 = Math.abs(18-15);
+    	int hight1 = Math.abs(3-1);
+    	int width2 = Math.abs(4-1);
+    	int hight2 = Math.abs(10-8);
+    	if ((width1==width2 && hight1 == hight2)||(width1 == hight2 && width2 == hight1)){
+    	fur.width = width1;
+    	fur.hight = hight1;
+    	logic.IDCount++;
+    	logic.furnitures.add(fur);
+    	logic.handleFurniture(logicBoard,fur, "-fx-background-color:#2E64FE;");
+    	}else{
+    		System.out.println("not same size");
+    	}
+    	Furniture fur1 = new Furniture(logic.IDCount, new Coordinates(15,1),new Coordinates(18,3),new Coordinates(1,8),new Coordinates(4,10));
+    	int width1 = Math.abs(18-15);
+    	int hight1 = Math.abs(3-1);
+    	int width2 = Math.abs(4-1);
+    	int hight2 = Math.abs(10-8);
+    	if ((width1==width2 && hight1 == hight2)||(width1 == hight2 && width2 == hight1)){
+    	fur.width = width1;
+    	fur.hight = hight1;
+    	logic.IDCount++;
+    	logic.furnitures.add(fur);
+    	logic.handleFurniture(logicBoard,fur, "-fx-background-color:#2E64FE;");
+    	}else{
+    		System.out.println("not same size");
+    	}
+    	Furniture fur = new Furniture(logic.IDCount, new Coordinates(15,1),new Coordinates(18,3),new Coordinates(1,8),new Coordinates(4,10));
+    	int width1 = Math.abs(18-15);
+    	int hight1 = Math.abs(3-1);
+    	int width2 = Math.abs(4-1);
+    	int hight2 = Math.abs(10-8);
+    	if ((width1==width2 && hight1 == hight2)||(width1 == hight2 && width2 == hight1)){
+    	fur.width = width1;
+    	fur.hight = hight1;
+    	logic.IDCount++;
+    	logic.furnitures.add(fur);
+    	logic.handleFurniture(logicBoard,fur, "-fx-background-color:#2E64FE;");
+    	}else{
+    		System.out.println("not same size");
+    	}Furniture fur = new Furniture(logic.IDCount, new Coordinates(15,1),new Coordinates(18,3),new Coordinates(1,8),new Coordinates(4,10));
+    	int width1 = Math.abs(18-15);
+    	int hight1 = Math.abs(3-1);
+    	int width2 = Math.abs(4-1);
+    	int hight2 = Math.abs(10-8);
+    	if ((width1==width2 && hight1 == hight2)||(width1 == hight2 && width2 == hight1)){
+    	fur.width = width1;
+    	fur.hight = hight1;
+    	logic.IDCount++;
+    	logic.furnitures.add(fur);
+    	logic.handleFurniture(logicBoard,fur, "-fx-background-color:#2E64FE;");
+    	}else{
+    		System.out.println("not same size");
+    	}*/
     	//System.out.println(String.valueOf(logic.findDistance(new Coordinates(4,8), new Coordinates(7,10))));
     	//Popup pop=new Popup();
     	//pop.is

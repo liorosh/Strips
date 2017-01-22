@@ -190,11 +190,14 @@ class Action extends StackItem
 	}
 		
 	
-	public void getNextDir(){
+	public boolean getNextDir(){
 		/*if (from!=null)
 			dirList.remove(from);*/
+		if (dirList.isEmpty()){
+			return false;
+		}
 		moveDirection = dirList.remove(dirList.size()-1);
-		
+		return true;
 		
 	}
 	

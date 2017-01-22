@@ -59,12 +59,25 @@ public class CalculateStack {
 					continue;
 				}
 			}
-			if (opStack.peek() instanceof  PrecondCanMoveFur){
+			/*if (opStack.peek() instanceof  PrecondCanMoveFur){
+				PrecondCanMoveFur precond = (PrecondCanMoveFur)opStack.peek();
+				Furniture furn = (precond.fur);
 				Furniture fur = ((PrecondCanMoveFur)opStack.peek()).isOverlapFur();
+				
 				if (fur!=null){
-					Location loc = findNextFurLoc(fur , ((PrecondCanMoveFur)opStack.peek()).dir);
+					fur.timesBuped++;
+					if (fur.timesBuped<5){
+						popToNextMove();
+						opStack.pop();
+						popAndDisp();
+						popToNextMove();
+						return;
+					}else{
+						fur.timesBuped = 0;
+					}
+					Location loc = findNextFurLoc(fur , ((PrecondCanMoveFur)opStack.peek()).dir, furn);
 					while (!logic.checkValidity(loc.upLeft, loc.btRight)){
-						loc = findNextFurLoc(fur , ((PrecondCanMoveFur)opStack.peek()).dir);
+						loc = findNextFurLoc(fur , ((PrecondCanMoveFur)opStack.peek()).dir ,furn);
 						if (loc == null){
 							while (!(opStack.peek()instanceof Action)){
 								opStack.pop();
@@ -75,13 +88,61 @@ public class CalculateStack {
 							return;
 						}
 					}
-					fur.unplannedMove = 0;
-					PrecondAT prec = new PrecondAT(fur, loc,null);
-					pushAndDisp(prec);
+					if (loc == null){
+						popToNextMove();
+					}else{
+						fur.timesBuped = 0;
+						Coordinates coaard1 = new Coordinates(furn.finalUpperLeft.x, furn.finalUpperLeft.y); 
+						Coordinates coaard2 = new Coordinates(furn.finalBottomRight.x, furn.finalBottomRight.y);
+						Location location  = new Location(coaard1, coaard2);
+						//go back times
+						PrecondAT precondition = new PrecondAT(furn, location, null);
+						int last;
+						if ((last=opStack.search(precondition))>0){
+							for (int i =opStack.size(); i>last; i--)
+							{
+								opStack.pop();
+								popAndDisp();
+							}
+						}
+						PrecondAT prec = new PrecondAT(fur, loc,null);
+						pushAndDisp(prec);
+						if (opStack.size()>((Math.max(fur.hight, fur.width)+ Math.max(furn.hight, furn.width)+logic.furnitures.size())*2)){
+							while (!(opStack.peek()instanceof Action)){
+								opStack.pop();
+								popAndDisp();
+							}
+						for ( int i = 0 ; i<Math.max(fur.hight, fur.width)+ Math.max(furn.hight, furn.width); i++){ 
+							opStack.pop();
+							popAndDisp();
+							
+							while (!(opStack.peek()instanceof Action)){
+								opStack.pop();
+								popAndDisp();
+							}
+							
+						}
+						
+						pushPreConds((Action)opStack.peek());
+						
+						}else{
+							popToNextMove();
+						}
+						return;
+					}
 				}else{
 					opStack.pop();
 					popAndDisp();
 					continue;
+				}
+			}*/
+			
+			if (opStack.peek() instanceof  PrecondCanMoveFur){
+				if (((PrecondCanMoveFur)opStack.peek()).isOverlapFur()==null){
+					opStack.pop();
+					popAndDisp();
+				}else{
+					popToNextMove();
 				}
 			}
 			
@@ -90,12 +151,7 @@ public class CalculateStack {
 					opStack.pop();
 					popAndDisp();
 				}else{
-					while (!(opStack.peek()instanceof Action)){
-						opStack.pop();
-						popAndDisp();
-					}
-					((Action)opStack.peek()).getNextDir();
-					pushPreConds((Action)opStack.peek());
+					popToNextMove();
 				}
 			}
 			if (opStack.peek() instanceof  IsValidPlace){
@@ -103,12 +159,7 @@ public class CalculateStack {
 					opStack.pop();
 					popAndDisp();
 				}else{
-					while (!(opStack.peek()instanceof Action)){
-						opStack.pop();
-						popAndDisp();
-					}
-					((Action)opStack.peek()).getNextDir();
-					pushPreConds((Action)opStack.peek());
+					popToNextMove();
 				}
 				
 			}
@@ -139,7 +190,7 @@ public class CalculateStack {
 	}
 	
 	
-	public Location findNextFurLoc(Furniture fur , direction dir){
+	public Location findNextFurLoc(Furniture fur , direction dir, Furniture furToMove){
 		Location loc= new Location();
 		loc.upLeft = new Coordinates();
 		loc.btRight = new Coordinates();
@@ -147,45 +198,146 @@ public class CalculateStack {
 		loc.upLeft.y = fur.upperLeft.y;
 		loc.btRight.x = fur.bottomRight.x;
 		loc.btRight.y = fur.bottomRight.y;
+		fur.unplannedMove++;
+		int amount=0;
 		ArrayList<Integer> directions = new ArrayList<Integer>();
 		directions.add(1);
 		directions.add(2);
 		directions.add(3);
 		directions.add(4);
 		if (dir == direction.LEFT || dir == direction.ROTATELEFT){
-			directions.remove(0);
+			if ((fur.unplannedMove%4)==0){
+			loc.upLeft.x-=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.x-=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;
+			}
+			if ((fur.unplannedMove%4)==1){
+			loc.upLeft.y+= Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.y+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;	
+			}
+			if ((fur.unplannedMove%4)==2){
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;	
+			loc.upLeft.y+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.y+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			}
+			if ((fur.unplannedMove%4)==3){
+			logic.leftRotate(loc);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;	
+			}
+			return null;
+			
+			
 		}
 		if (dir == direction.RIGHT || dir == direction.ROTATERIGHT){
-			directions.remove(1);
+			if ((fur.unplannedMove%4)==0){
+			loc.upLeft.x+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.x+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;
+			}
+			if ((fur.unplannedMove%4)==1){
+			loc.upLeft.y+= Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.y+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;	
+			}
+			if ((fur.unplannedMove%4)==2){
+			loc.upLeft.y-= Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.y-=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;	
+			}
+			if ((fur.unplannedMove%4)==3){
+			logic.RightRotate(loc);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;	
+			}
+			
+			return null;
 		}
 		if (dir == direction.UP){
-			directions.remove(2);
+			if ((fur.unplannedMove%4)==0){
+			loc.upLeft.y-=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.y-=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;
+			}
+			if ((fur.unplannedMove%4)==1){
+			loc.upLeft.x+= Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.x+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;	
+			}
+			if ((fur.unplannedMove%4)==2){
+			loc.upLeft.x-= Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.x-=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;
+			}
+	
+			if ((fur.unplannedMove%4)==3){
+				logic.RightRotate(loc);
+				if (logic.checkValidity(loc.upLeft, loc.btRight))
+					return loc;	
+			}
+			
+			return null;
 		}
 		if (dir == direction.DOWN || dir == direction.DOWN){
-			directions.remove(3);
+			if ((fur.unplannedMove%4)==0){
+			loc.upLeft.y+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.y+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;
+			}
+			if ((fur.unplannedMove%4)==1){
+			loc.upLeft.x+= Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.x+=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;	
+			}
+			if ((fur.unplannedMove%4)==2){
+			loc.upLeft.x-= Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			loc.btRight.x-=Math.max(fur.hight, fur.width)+ Math.max(furToMove.hight, furToMove.width);
+			if (logic.checkValidity(loc.upLeft, loc.btRight))
+				return loc;
+			}
+			if ((fur.unplannedMove%4)==3){
+				logic.RightRotate(loc);
+				if (logic.checkValidity(loc.upLeft, loc.btRight))
+					return loc;	
+			}
+			
+			return null;
 		}
+		return loc;
 		//if (((fur.finalUpperLeft.x - fur.upperLeft.x==0))&&((fur.finalUpperLeft.y - fur.upperLeft.y)==0)){
-			if (fur.unplannedMove>2)
+		/*	if (fur.unplannedMove>2)
 				return null;
 			int n = directions.get(fur.unplannedMove);
 			if (n ==1){
-				loc.upLeft.x=loc.upLeft.x+4;
-				loc.btRight.x=loc.btRight.x+4;
+				loc.upLeft.x=loc.upLeft.x+amount;
+				loc.btRight.x=loc.btRight.x+amount;
 			}
 			if (n ==2){
-				loc.upLeft.x=loc.upLeft.x-4;
-				loc.btRight.x=loc.btRight.x-4;
+				loc.upLeft.x=loc.upLeft.x-amount;
+				loc.btRight.x=loc.btRight.x-amount;
 			}
 			if (n ==3){
-				loc.upLeft.y=loc.upLeft.y-4;
-				loc.btRight.y=loc.btRight.y-4;
+				loc.upLeft.y=loc.upLeft.y-amount;
+				loc.btRight.y=loc.btRight.y-amount;
 			}
 			if (n ==4){
-				loc.upLeft.y=loc.upLeft.y+4;
-				loc.btRight.y=loc.btRight.y+4;
+				loc.upLeft.y=loc.upLeft.y+amount;
+				loc.btRight.y=loc.btRight.y+amount;
 			}
 			fur.unplannedMove++;
-			return loc;
+			return loc;*/
 		//}
 		/*loc.upLeft.x = (fur.upperLeft.x+fur.finalUpperLeft.x)/2;
 		loc.upLeft.y = (fur.upperLeft.y+fur.finalUpperLeft.y)/2;
@@ -283,8 +435,9 @@ public class CalculateStack {
 			pushPreConds(((Action)opStack.peek()));
 			return;
 		}
-		pushAndDisp(new PrecondCanMoveFur(move.fur, move.destination , move.moveDirection));
+		
 		pushAndDisp(precond);
+		pushAndDisp(new PrecondCanMoveFur(move.fur,loc , move.moveDirection));
 		pushAndDisp(new PrecondCanMoveWall(move.fur,move.moveDirection, move.destination));
 		pushAndDisp(new IsValidPlace(loc));
 		
@@ -317,5 +470,24 @@ public class CalculateStack {
 		
 		
 		}*/
+	}
+	
+	public void popToNextMove(){
+		while (!(opStack.peek()instanceof Action)){
+			opStack.pop();
+			popAndDisp();
+		}
+		Action act = ((Action)opStack.peek());
+		while (!act.getNextDir()){
+			while (!(opStack.peek()instanceof Action)){
+				opStack.pop();
+				popAndDisp();
+			}
+			act = ((Action)opStack.peek());
+		}
+		opStack.pop();
+		popAndDisp();
+		pushAndDisp(act);
+		pushPreConds(act);
 	}
 }
