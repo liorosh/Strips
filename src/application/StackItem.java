@@ -15,7 +15,7 @@ public abstract class StackItem {
 	}
 	public Furniture getFur(){
 		return fur;
-		 
+
 	}
 	public boolean checkValidity(Coordinates newupleft, Coordinates newdownright)
 	{
@@ -27,7 +27,7 @@ public abstract class StackItem {
 		
 	}
 	public abstract String toString();
-	
+
 }
 class Action extends StackItem
 {
@@ -48,7 +48,7 @@ class Action extends StackItem
 	}
 	public void fillStack(){
 		/*for (int i = direction.values().length - 1; i >= 0; i--) {
-			dirStack.push(direction.values()[i]); 
+			dirStack.push(direction.values()[i]);
 		}*/
 		int xDiff = destination.upLeft.x- fur.upperLeft.x;
 		int yDiff = destination.upLeft.y- fur.upperLeft.y;
@@ -107,7 +107,7 @@ class Action extends StackItem
 					dirList.add(direction.ROTATELEFT);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.UP);
-					
+
 				}
 				else{
 					dirList.add(direction.DOWN);
@@ -127,7 +127,7 @@ class Action extends StackItem
 				dirList.add(direction.DOWN);
 				dirList.add(direction.LEFT);
 				}else{
-				
+
 						dirList.add(direction.RIGHT);
 						dirList.add(direction.UP);
 						dirList.add(direction.DOWN);
@@ -148,12 +148,12 @@ class Action extends StackItem
 					dirList.add(direction.DOWN);
 					dirList.add(direction.ROTATELEFT);
 				}
-				
+
 			}
-			
+
 		}
 		else if(((xDiff>0) && (yDiff<0))){
-			
+
 			if (Math.abs(yDiff)<xDiff){
 				if (!needRotate){
 				dirList.add(direction.LEFT);
@@ -162,7 +162,7 @@ class Action extends StackItem
 				dirList.add(direction.UP);
 				dirList.add(direction.RIGHT);
 				}else{
-				
+
 					dirList.add(direction.LEFT);
 					dirList.add(direction.DOWN);
 					dirList.add(direction.UP);
@@ -176,7 +176,7 @@ class Action extends StackItem
 					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.UP);
-				
+
 				}else{
 					dirList.add(direction.DOWN);
 					dirList.add(direction.LEFT);
@@ -184,27 +184,29 @@ class Action extends StackItem
 					dirList.add(direction.UP);
 					dirList.add(direction.ROTATERIGHT);
 				}
-				
+
 			}
 		}
 	}
+
 		
 	
 	public boolean getNextDir(){
-		/*if (from!=null)
-			dirList.remove(from);*/
+	
 		if (dirList.isEmpty()){
+			System.out.println("No more directions");
 			return false;
 		}
 		moveDirection = dirList.remove(dirList.size()-1);
+
 		return true;
 		
 	}
-	
+
 	public String toString(){
 		return "move(" +Integer.toString(fur.ID) + ", "+ moveDirection.toString() + ", " + destination.toString() + ")";
 	}
-	
+
 	public void makeMove(){
 		upAndDown=0;
 		leftAndRight=0;
@@ -231,19 +233,20 @@ class Action extends StackItem
 			rightrotateFurniture();
 		}
 	}
-	
+
 	public void move()
 	{
-		logic.handleFurniture(logicBoard,fur,null);
+		logic.handleFurniture(logicBoard,fur,"transparent");
 		Coordinates newUpLeft=new Coordinates(fur.upperLeft.x+leftAndRight,fur.upperLeft.y+upAndDown);
 		Coordinates newBotRight=new Coordinates(fur.bottomRight.x+leftAndRight,fur.bottomRight.y+upAndDown);
 		fur.upperLeft = newUpLeft;
 		fur.bottomRight = newBotRight;
-		logic.handleFurniture(logicBoard,fur,"-fx-background-color:#dae753;");
+		String colorInHex=String.format("#%02x%02x%02x",fur.color.getRed(),fur.color.getGreen(),fur.color.getBlue());
+		logic.handleFurniture(logicBoard,fur,colorInHex);
 	}
 	public void rightrotateFurniture()
 	{
-		logic.handleFurniture(logicBoard,fur,null);
+		logic.handleFurniture(logicBoard,fur,"transparent");
 		int centerX = (fur.upperLeft.x + fur.bottomRight.x) / 2;
 		int centerY = (fur.upperLeft.y + fur.bottomRight.y) / 2;
 		Coordinates newUpLeft=new Coordinates(centerX  + (fur.upperLeft.y - centerY),centerY - (centerX - fur.upperLeft.x));
@@ -255,13 +258,13 @@ class Action extends StackItem
 		fur.upperLeft = newUpLeft;
 		fur.bottomRight = newBotRight;
 		System.out.println(fur.upperLeft.x + " " + fur.upperLeft.y);
-		
-		logic.handleFurniture(logicBoard,fur,"-fx-background-color:#dae753;");
+		String colorInHex=String.format("#%02x%02x%02x",fur.color.getRed(),fur.color.getGreen(),fur.color.getBlue());
+		logic.handleFurniture(logicBoard,fur,colorInHex);
 	}
 
 	public void leftrotateFurniture()
 	{
-		logic.handleFurniture(logicBoard,fur,null);
+		logic.handleFurniture(logicBoard,fur,"transparent");
 		int centerX = ((fur.upperLeft.x + fur.bottomRight.x)) / 2;
 		int centerY = ((fur.upperLeft.y + fur.bottomRight.y)) / 2;
 		Coordinates newUpLeft=new Coordinates(centerX + (fur.upperLeft.y - centerY),centerY - (centerX - fur.upperLeft.x));
@@ -270,12 +273,12 @@ class Action extends StackItem
 			newUpLeft.x--;
 			newBotRight.x--;
 		}
-	
+
 		fur.upperLeft = newUpLeft;
 		fur.bottomRight = newBotRight;
 		System.out.println(centerX + " " + centerY);
-		
-		logic.handleFurniture(logicBoard,fur,"-fx-background-color:#dae753;");
+		String colorInHex=String.format("#%02x%02x%02x",fur.color.getRed(),fur.color.getGreen(),fur.color.getBlue());
+		logic.handleFurniture(logicBoard,fur,colorInHex);
 	}
 }
 
@@ -323,7 +326,7 @@ class PrecondCanMoveWall extends StackItem{
 		this.moveDirection = dir;
 		this.dest = dest;
 		//isSatisfied=checkValidity(dest.upLeft, dest.btRight);
-		
+
 	}
 	public String toString(){
 		return "canMove(" + Integer.toString(fur.ID) + "," + moveDirection.toString()+")";
@@ -345,7 +348,7 @@ class PrecondCanMoveWall extends StackItem{
 			newdownright.y = btRight.y;
 			return (logic.checkForWalls(newupleft,newdownright,logic.walls));
 		}
-		
+
 		if (dir == direction.RIGHT || dir == direction.RIGHT){
 			newupleft.x = btRight.x-1;
 			newupleft.y = upleft.y;
@@ -365,7 +368,7 @@ class PrecondCanMoveWall extends StackItem{
 	public boolean isSatisfied(){
 		return checkValidity(dest.upLeft, dest.btRight)&& wallBetween(dest.upLeft,dest.btRight, moveDirection);
 	}
-	
+
 	/*public void canMove(){
 		if (moveDirection == direction.RIGHT){
 			newupleft.x=fur.upperLeft.x+1;
@@ -411,22 +414,22 @@ class PrecondCanMoveWall extends StackItem{
 				newdownright.x++;
 			}
 		}
-		
-		
+
+
 	}*/
-	
-	
+
+
 }
 
 class PrecondAT extends StackItem{
-	
+
 	Location location;
 	direction from;
 	PrecondAT(Furniture fur, Location loc, direction from) {
 		super(fur);
 		this.location = loc;
 		this.from = from;
-		
+
 
 	}
 	@Override
@@ -441,33 +444,33 @@ class PrecondAT extends StackItem{
 	public boolean isSatisfied(){
 		return ((fur.upperLeft.equals(location.upLeft) )&&(fur.bottomRight.equals(location.btRight)));
 	}
-	
-	
+
+
 	public String toString(){
 		return "isAt(" + Integer.toString(fur.ID) + "," + location.toString()+")";
 	}
-	
-	
+
+
 }
 
 class IsValidPlace extends StackItem{
-	
+
 	Location location;
 	IsValidPlace( Location loc) {
 		super(null);
 		this.location = loc;
-		
+
 
 	}
 	public boolean isSatisfied(){
 		return (checkValidity(location.upLeft, location.btRight));
 	}
-	
-	
+
+
 	public String toString(){
 		return "canBeAt"+location.toString();
 	}
-	
-	
+
+
 }
 
