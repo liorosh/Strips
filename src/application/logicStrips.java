@@ -1,12 +1,15 @@
 package application;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
+
+
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+
 
 class Coordinates
 {
@@ -34,18 +37,18 @@ class Location
 	Coordinates upLeft;
 	Coordinates btRight;
 	Location(){
-		
+
 	}
 	Location(Coordinates upLeft, Coordinates btRight){
 		this.upLeft = upLeft;
 		this.btRight = btRight;
-		
+
 	}
-	
+
 	public String toString(){
 		return "(" + Integer.toString(upLeft.x)+", "+Integer.toString(upLeft.y)+"),("+Integer.toString(btRight.x)+", "+Integer.toString(btRight.y)+")";
 	}
-	
+
 	@Override
 	  public boolean equals(Object ob) {
 	    if (ob == null) return false;
@@ -69,7 +72,7 @@ class Room
 		this.door1 = door1;
 		this.door2 = door2;
 	}
-	
+
 }
 class Furniture
 {
@@ -81,7 +84,7 @@ class Furniture
 	Coordinates finalBottomRight;
 	Coordinates diff;
 	boolean needRotate;
-
+	Color color;
 	Furniture (int id, Coordinates upleft, Coordinates botright ,Coordinates fupleft, Coordinates fbotright)
 	{
 		this.ID = id;
@@ -89,6 +92,11 @@ class Furniture
 		this.bottomRight = botright;
 		this.finalUpperLeft = fupleft;
 		this.finalBottomRight = fbotright;
+		Random rand = new Random();
+		float r = rand.nextFloat();
+		float g = rand.nextFloat();
+		float b = rand.nextFloat();
+		this.color=new Color(r,g,b);
 		/*this.diff.x = fupleft.x - upleft.x;
 		this.diff.y = fbotright.y - botright.y;*/
 	}
@@ -105,7 +113,7 @@ class Wall
 }
 
 enum direction{
-	 RIGHT,LEFT, UP, DOWN, ROTATELEFT, ROTATERIGHT 
+	 RIGHT,LEFT, UP, DOWN, ROTATELEFT, ROTATERIGHT
 }
 class Door
 {
@@ -146,8 +154,8 @@ public class logicStrips
 		{
     		for(int j = furniture.upperLeft.y; j <= furniture.bottomRight.y; j++)
     		{
-    			logicBoard[i][j].setStyle(color);
-    			if(color == null){
+    			logicBoard[i][j].setStyle(logicBoard[i][j].getStyle()+"-fx-background-color:"+color+";");
+    			if(color.equals("transparent")){
     				logicBoard[i][j].getChildren().clear();
     			}
     			else{
@@ -155,8 +163,8 @@ public class logicStrips
     			    text.setAlignment(Pos.CENTER);
         			logicBoard[i][j].getChildren().add(text);
     			}
-    			
-    			
+
+
     		}
     	}
 	}
@@ -185,11 +193,11 @@ public class logicStrips
 
 		return true;
 	}
-	
+
 	public boolean at(Furniture fur ,Coordinates upperL, Coordinates bottomR ){
 		return ((fur.upperLeft==upperL) && fur.bottomRight==bottomR);
 	}
-	
+
 	public Room whichRoom(Coordinates upperL, Coordinates bottomR){
 		if(upperL.x <= room1.downRightCoord.x && upperL.x >=room1.upLeftCoord.x && bottomR.x <= room1.downRightCoord.x && bottomR.x >=room1.upLeftCoord.x && upperL.y <= room1.downRightCoord.y && upperL.y >=room1.upLeftCoord.y && bottomR.y <= room1.downRightCoord.y && bottomR.y >=room1.upLeftCoord.y ){
 			return room1;
@@ -200,11 +208,62 @@ public class logicStrips
 		else if (upperL.x <= room3.downRightCoord.x && upperL.x >=room3.upLeftCoord.x && bottomR.x <= room3.downRightCoord.x && bottomR.x >=room3.upLeftCoord.x && upperL.y <= room3.downRightCoord.y && upperL.y >=room3.upLeftCoord.y && bottomR.y <= room3.downRightCoord.y && bottomR.y >=room3.upLeftCoord.y ){
 			return room3;
 		}
-		else 
+		else
 			return null;
 	}
     public double findDistance (Coordinates coord1, Coordinates coord2){
     	double dis = Math.sqrt((Math.pow((double)(coord2.y - coord1.y),2)) + ( Math.pow((double)(coord2.x - coord1.x),2)));
     	return dis;
     }
+	public void handleDestination(Pane[][] logicBoard ,int upperLeftX, int upperLeftY, int bottomRightX, int bottomRightY, String colorInHex) {
+		for (int i = upperLeftX;i<=bottomRightX;i++)
+		{
+			for (int j = upperLeftY;j<=bottomRightY;j++)
+			{
+				if(upperLeftX==bottomRightX)
+				{
+					if(upperLeftY==bottomRightY)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style:solid; -fx-border-color:" +colorInHex +"; -fx-border-width: 2;");
+					else if(j==upperLeftY)
+					{
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: solid solid hidden solid; -fx-border-color:" +colorInHex+"; -fx-border-width: 2;");
+					}
+					else if(j==bottomRightY){
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: hidden solid solid solid; -fx-border-color:"+colorInHex+"; -fx-border-width: 2;");
+					}
+					else
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: hidden solid hidden solid; -fx-border-color:"+colorInHex+"; -fx-border-width: 2;");
+				}
+				else if(upperLeftY==bottomRightY && upperLeftX!=bottomRightX)
+				{
+					if(i==upperLeftX)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: solid hidden solid solid; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else if(i==bottomRightX)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: solid solid solid hidden; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: solid hidden solid hidden; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+				}
+				else
+				{
+					if(i==upperLeftX && j==upperLeftY)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: solid hidden hidden solid; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else if(i==bottomRightX && j==upperLeftY)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: solid solid hidden hidden; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else if(i==bottomRightX && j==bottomRightY)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: hidden solid solid hidden; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else if(i==upperLeftX && j==bottomRightY)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: hidden hidden solid solid; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else if(j==upperLeftY)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: solid hidden hidden hidden; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else if(j==bottomRightY)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: hidden hidden solid hidden; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else if (i==upperLeftX)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: hidden hidden hidden solid; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+					else if (i==bottomRightX)
+						logicBoard[i][j].setStyle(logicBoard[i][j].getStyle() + "-fx-border-style: hidden solid hidden hidden; -fx-border-color: "+colorInHex+"; -fx-border-width: 2;");
+
+				}
+			}
+		}
+	}
 }

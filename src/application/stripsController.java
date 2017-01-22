@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 
@@ -28,10 +29,10 @@ public class stripsController {
 	int counter = 0;
     @FXML
     private Button start;
-	
+
     @FXML
     private TextField x1;
-    
+
     @FXML
     private TextField y4;
 
@@ -40,25 +41,25 @@ public class stripsController {
 
     @FXML
     private TextField x4;
-    
+
     @FXML
     private TextField y3;
 
     @FXML
     private TextField y2;
-    
+
     @FXML
     private TextField y1;
 
     @FXML
     private TextField x2;
-    
+
     @FXML
     private ListView<String> stackCalc;
 
     @FXML
     private Button next;
-    
+
 	@FXML
     private Button up,down,rotateleft,rotateright,moveright,moveleft,addFurniture;
 
@@ -94,7 +95,7 @@ public class stripsController {
     {
 		//logic.leftrotateFurniture(logicBoard,furniture);
     }
-    
+
     @FXML
     void startFunction(ActionEvent event) {
 
@@ -108,7 +109,7 @@ public class stripsController {
 
     @FXML
     void addFurniture(ActionEvent event) {
-    	
+
     	int ix1 = Integer.valueOf(x1.getText());
     	int ix2 = Integer.valueOf(x2.getText());
     	int iy1 = Integer.valueOf(y1.getText());
@@ -128,7 +129,11 @@ public class stripsController {
     	y1.setText("");
     	y2.setText("");
     	y3.setText("");
-    	logic.handleFurniture(logicBoard,fur, "-fx-background-color:#2E64FE;");
+    	String colorInHex=String.format("#%02x%02x%02x",fur.color.getRed(),fur.color.getGreen(),fur.color.getBlue());
+    	logic.handleFurniture(logicBoard,fur, colorInHex);
+    	Color borderColor=fur.color.brighter();
+    	colorInHex=String.format("#%02x%02x%02x",borderColor.getRed(),borderColor.getGreen(),borderColor.getBlue());
+    	logic.handleDestination(logicBoard,ix3,iy3,ix4,iy4,colorInHex);
     	//System.out.println(String.valueOf(logic.findDistance(new Coordinates(4,8), new Coordinates(7,10))));
     	//Popup pop=new Popup();
     	//pop.is
@@ -151,28 +156,28 @@ public class stripsController {
     			Pane guiItem = new Pane ();
     			logicBoard[i][j] = guiItem;
     			board.add(guiItem, i, j);
-    			
+
     		}
     	}
     	logic.setWalls();
- 
+
     	//stackCalc = new ListView<String>();
     }
-    
-    
-    
+
+
+
     @FXML
     void Start(ActionEvent event) {
     	calc= new CalculateStack(stackItems, stackCalc,logicBoard);
-    	
-	
+
+
     	/*stackItems.add("c");
     	stackItems.add("a");
     	stackItems.add("b");
     	stackItems.add
     	System.out.println("fgfgh");
     	stackCalc.setItems(stackItems);*/
-    
+
     }
     @FXML
     void next(ActionEvent event) {
