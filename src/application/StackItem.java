@@ -58,12 +58,14 @@ class Action extends StackItem
 					if (!needRotate){
 						dirList.add(direction.LEFT);
 						dirList.add(direction.UP);
+						dirList.add(direction.ROTATELEFT);
 						dirList.add(direction.ROTATERIGHT);
 						dirList.add(direction.DOWN);
 						dirList.add(direction.RIGHT);
 					}else{
 						dirList.add(direction.LEFT);
 						dirList.add(direction.UP);
+						dirList.add(direction.ROTATELEFT);
 						dirList.add(direction.DOWN);
 						dirList.add(direction.RIGHT);
 						dirList.add(direction.ROTATERIGHT);
@@ -73,12 +75,14 @@ class Action extends StackItem
 							dirList.add(direction.UP);
 							dirList.add(direction.LEFT);
 							dirList.add(direction.ROTATELEFT);
+							dirList.add(direction.ROTATERIGHT);
 							dirList.add(direction.RIGHT);
 							dirList.add(direction.DOWN);
 					}
 					else{
 						dirList.add(direction.UP);
 						dirList.add(direction.LEFT);
+						dirList.add(direction.ROTATELEFT);
 						dirList.add(direction.RIGHT);
 						dirList.add(direction.DOWN);
 						dirList.add(direction.ROTATERIGHT);
@@ -90,12 +94,14 @@ class Action extends StackItem
 				if (!needRotate){
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.DOWN);
+					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.ROTATELEFT);
 					dirList.add(direction.UP);
 					dirList.add(direction.LEFT);
 				}else{
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.DOWN);
+					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.UP);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.ROTATELEFT);
@@ -104,6 +110,7 @@ class Action extends StackItem
 				if (!needRotate){
 					dirList.add(direction.DOWN);
 					dirList.add(direction.RIGHT);
+					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.ROTATELEFT);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.UP);
@@ -112,6 +119,7 @@ class Action extends StackItem
 				else{
 					dirList.add(direction.DOWN);
 					dirList.add(direction.RIGHT);
+					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.UP);
 					dirList.add(direction.ROTATELEFT);
@@ -123,6 +131,7 @@ class Action extends StackItem
 				if (!needRotate){
 				dirList.add(direction.RIGHT);
 				dirList.add(direction.UP);
+				dirList.add(direction.ROTATERIGHT);
 				dirList.add(direction.ROTATELEFT);
 				dirList.add(direction.DOWN);
 				dirList.add(direction.LEFT);
@@ -130,6 +139,7 @@ class Action extends StackItem
 
 						dirList.add(direction.RIGHT);
 						dirList.add(direction.UP);
+						dirList.add(direction.ROTATERIGHT);
 						dirList.add(direction.DOWN);
 						dirList.add(direction.LEFT);
 						dirList.add(direction.ROTATELEFT);
@@ -138,12 +148,14 @@ class Action extends StackItem
 				if (!needRotate){
 				dirList.add(direction.UP);
 				dirList.add(direction.RIGHT);
+				dirList.add(direction.ROTATERIGHT);
 				dirList.add(direction.ROTATELEFT);
 				dirList.add(direction.LEFT);
 				dirList.add(direction.DOWN);
 				}else{
 					dirList.add(direction.UP);
 					dirList.add(direction.RIGHT);
+					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.LEFT);
 					dirList.add(direction.DOWN);
 					dirList.add(direction.ROTATELEFT);
@@ -158,6 +170,7 @@ class Action extends StackItem
 				if (!needRotate){
 				dirList.add(direction.LEFT);
 				dirList.add(direction.DOWN);
+				dirList.add(direction.ROTATELEFT);
 				dirList.add(direction.ROTATERIGHT);
 				dirList.add(direction.UP);
 				dirList.add(direction.RIGHT);
@@ -165,6 +178,7 @@ class Action extends StackItem
 
 					dirList.add(direction.LEFT);
 					dirList.add(direction.DOWN);
+					dirList.add(direction.ROTATELEFT);
 					dirList.add(direction.UP);
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.ROTATERIGHT);
@@ -173,6 +187,7 @@ class Action extends StackItem
 				if (!needRotate){
 					dirList.add(direction.DOWN);
 					dirList.add(direction.LEFT);
+					dirList.add(direction.ROTATELEFT);
 					dirList.add(direction.ROTATERIGHT);
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.UP);
@@ -180,6 +195,7 @@ class Action extends StackItem
 				}else{
 					dirList.add(direction.DOWN);
 					dirList.add(direction.LEFT);
+					dirList.add(direction.ROTATELEFT);
 					dirList.add(direction.RIGHT);
 					dirList.add(direction.UP);
 					dirList.add(direction.ROTATERIGHT);
@@ -251,10 +267,10 @@ class Action extends StackItem
 		int centerY = (fur.upperLeft.y + fur.bottomRight.y) / 2;
 		Coordinates newUpLeft=new Coordinates(centerX  + (fur.upperLeft.y - centerY),centerY - (centerX - fur.upperLeft.x));
 		Coordinates newBotRight=new Coordinates(centerX  + (fur.bottomRight.y - centerY), centerY + (fur.bottomRight.x - centerX));
-		if ((fur.bottomRight.x - fur.upperLeft.x) > (fur.bottomRight.y - fur.upperLeft.y)){
+		/*if ((fur.bottomRight.x - fur.upperLeft.x) > (fur.bottomRight.y - fur.upperLeft.y)){
 			newUpLeft.x++;
 			newBotRight.x++;
-		}
+		}*/
 		fur.upperLeft = newUpLeft;
 		fur.bottomRight = newBotRight;
 		System.out.println(fur.upperLeft.x + " " + fur.upperLeft.y);
@@ -269,10 +285,10 @@ class Action extends StackItem
 		int centerY = ((fur.upperLeft.y + fur.bottomRight.y)) / 2;
 		Coordinates newUpLeft=new Coordinates(centerX + (fur.upperLeft.y - centerY),centerY - (centerX - fur.upperLeft.x));
 		Coordinates newBotRight=new Coordinates(centerX  + (fur.bottomRight.y - centerY), centerY + (fur.bottomRight.x - centerX));
-		if ((fur.bottomRight.x - fur.upperLeft.x) < (fur.bottomRight.y - fur.upperLeft.y)){
+		/*if ((fur.bottomRight.x - fur.upperLeft.x) < (fur.bottomRight.y - fur.upperLeft.y)){
 			newUpLeft.x--;
 			newBotRight.x--;
-		}
+		}*/
 
 		fur.upperLeft = newUpLeft;
 		fur.bottomRight = newBotRight;

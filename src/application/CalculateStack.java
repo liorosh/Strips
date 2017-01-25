@@ -31,7 +31,7 @@ public class CalculateStack {
 	
 
 	public void startCalculations(int counter){
-		while (!opStack.isEmpty() && (counter==0)){
+		while (!opStack.isEmpty()/* && (counter==0)*/){
 			counter =1;
 			if (opStack.peek() instanceof  PrecondAT){
 				PrecondAT precond = ((PrecondAT)opStack.peek());
@@ -66,11 +66,11 @@ public class CalculateStack {
 				
 				if (fur!=null){
 					fur.timesBuped++;
-					if (fur.timesBuped<5){
+					if (fur.timesBuped<10){
 						popToNextMove();
-						opStack.pop();
-						popAndDisp();
-						popToNextMove();
+						//opStack.pop();
+						//popAndDisp();
+						//popToNextMove();
 						return;
 					}else{
 						fur.timesBuped = 0;
@@ -137,6 +137,16 @@ public class CalculateStack {
 				}
 			}*/
 			
+			/*if (opStack.peek() instanceof  PrecondCanMoveFur){
+				PrecondCanMoveFur precond = (PrecondCanMoveFur)opStack.peek();
+				Furniture furn = (precond.fur);
+				Furniture fur = ((PrecondCanMoveFur)opStack.peek()).isOverlapFur();
+				if (fur==null){
+					opStack.pop();
+					popAndDisp();
+				}else{
+				}
+			}*/
 			if (opStack.peek() instanceof  PrecondCanMoveFur){
 				if (((PrecondCanMoveFur)opStack.peek()).isOverlapFur()==null){
 					opStack.pop();
@@ -401,10 +411,10 @@ public class CalculateStack {
 			int centerY = ((move.destination.upLeft.y + move.destination.btRight.y)) / 2;
 			loc.upLeft=new Coordinates(centerX + (move.destination.upLeft.y - centerY),centerY - (centerX - move.destination.upLeft.x));
 			loc.btRight=new Coordinates(centerX  + (move.destination.btRight.y - centerY), centerY + (move.destination.btRight.x - centerX));
-			if ((move.destination.btRight.x - move.destination.upLeft.x) < (move.destination.btRight.y - move.destination.upLeft.y)){
+			/*if ((move.destination.btRight.x - move.destination.upLeft.x) > (move.destination.btRight.y - move.destination.upLeft.y)){
 				loc.upLeft.x--;
 				loc.btRight.x--;
-			}
+			}*/
 			oposite = direction.ROTATELEFT;
 		}
 		else if (move.moveDirection == direction.ROTATELEFT){
@@ -412,10 +422,10 @@ public class CalculateStack {
 			int centerY = (move.destination.upLeft.y + move.destination.btRight.y) / 2;
 			loc.upLeft = new Coordinates(centerX  + (move.destination.upLeft.y - centerY),centerY - (centerX - move.destination.upLeft.x));
 			loc.btRight = new Coordinates(centerX  + (move.destination.btRight.y - centerY), centerY + (move.destination.btRight.x - centerX));
-			if ((move.destination.btRight.x - move.destination.upLeft.x) > (move.destination.btRight.y - move.destination.upLeft.y)){
+			/*if ((move.destination.btRight.x - move.destination.upLeft.x) < (move.destination.btRight.y - move.destination.upLeft.y)){
 				loc.upLeft.x++;
 				loc.btRight.x++;
-			}
+			}*/
 			oposite = direction.ROTATERIGHT;
 		}
 		
@@ -423,16 +433,17 @@ public class CalculateStack {
 		int last;
 		if ((last=opStack.search(precond))>0){
 			System.out.println("gfgfh");
+			popToNextMove();
 			/*for (int i = opStack.size(); i>=last; i--){
 				opStack.pop();
 				popAndDisp();
 			}*/
-			while (!(opStack.peek()instanceof Action)){
+			/*while (!(opStack.peek()instanceof Action)){
 				opStack.pop();
 				popAndDisp();
 			}
 			((Action)opStack.peek()).getNextDir();
-			pushPreConds(((Action)opStack.peek()));
+			pushPreConds(((Action)opStack.peek()));*/
 			return;
 		}
 		
@@ -479,6 +490,17 @@ public class CalculateStack {
 		}
 		Action act = ((Action)opStack.peek());
 		while (!act.getNextDir()){
+			opStack.pop();
+			popAndDisp();
+			/*if (opStack.size()<= logic.furnitures.size()){
+				logic.furnitures.add(0, logic.furnitures.get(logic.furnitures.size()-1));
+				logic.furnitures.remove(logic.furnitures.size()-1);
+				for(Furniture fur: logic.furnitures){
+					PrecondAT prec = new PrecondAT(fur, new Location(fur.finalUpperLeft, fur.finalBottomRight),null);
+					pushAndDisp(prec);
+				}
+				return;
+			}*/
 			while (!(opStack.peek()instanceof Action)){
 				opStack.pop();
 				popAndDisp();
