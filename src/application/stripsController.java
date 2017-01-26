@@ -241,18 +241,18 @@ public class stripsController {
     	calc= new CalculateStack(stackItems, stackCalc,logicBoard);
 
 
-    	/*stackItems.add("c");
-    	stackItems.add("a");
-    	stackItems.add("b");
-    	stackItems.add
-    	System.out.println("fgfgh");
-    	stackCalc.setItems(stackItems);*/
-
     }
     @FXML
     void next(ActionEvent event) {
-    	counter=0;
-    	calc.startCalculations(counter);
+    	if(calc.stopFlag){
+    		calc.stopFlag=false;
+    		this.next.setText("Continue");
+    	}
+    	else if(!calc.stopFlag){
+    		calc.stopFlag=true;
+    		this.next.setText("Stop");
+    	}
+    	
     }
 
 }

@@ -441,10 +441,13 @@ class PrecondAT extends StackItem{
 
 	Location location;
 	direction from;
+	boolean isMoveFur;
+	List<Location> locationList = new ArrayList<Location>();
 	PrecondAT(Furniture fur, Location loc, direction from) {
 		super(fur);
 		this.location = loc;
 		this.from = from;
+		isMoveFur = false;
 
 
 	}
